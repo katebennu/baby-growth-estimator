@@ -55,21 +55,50 @@
                     </div>
                 </div>
                 
-                <button type="submit">Calculate Weight</button>
+                <button type="submit">Calculate Growth Estimates</button>
             </form>
             
             <div id="result" class="result hidden">
-                <h3>Estimated Weight</h3>
-                <div class="weight-display">
-                    <span id="weightValue">0</span>
-                    <span id="weightUnit" class="unit">kg</span>
+                <h3>Growth Estimates</h3>
+                
+                <div class="measurement-section">
+                    <h4>Weight</h4>
+                    <div class="weight-display">
+                        <span id="weightValue">0</span>
+                        <span id="weightUnit" class="unit">kg</span>
+                    </div>
+                    <div class="weight-conversion">
+                        <span id="convertedWeight">0</span>
+                        <span id="convertedUnit" class="unit">lbs</span>
+                    </div>
                 </div>
-                <div class="weight-conversion">
-                    <span id="convertedWeight">0</span>
-                    <span id="convertedUnit" class="unit">lbs</span>
+                
+                <div class="measurement-section">
+                    <h4>Length</h4>
+                    <div class="length-display">
+                        <span id="lengthValue">0</span>
+                        <span id="lengthUnit" class="unit">cm</span>
+                    </div>
+                    <div class="length-conversion">
+                        <span id="convertedLength">0</span>
+                        <span id="convertedLengthUnit" class="unit">inches</span>
+                    </div>
                 </div>
-                <div class="weight-info">
-                    <p id="weightInfo"></p>
+                
+                <div class="measurement-section">
+                    <h4>Head Circumference</h4>
+                    <div class="head-display">
+                        <span id="headValue">0</span>
+                        <span id="headUnit" class="unit">cm</span>
+                    </div>
+                    <div class="head-conversion">
+                        <span id="convertedHead">0</span>
+                        <span id="convertedHeadUnit" class="unit">inches</span>
+                    </div>
+                </div>
+                
+                <div class="measurement-info">
+                    <p id="measurementInfo"></p>
                 </div>
             </div>
             

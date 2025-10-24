@@ -1,15 +1,17 @@
-# Baby Weight Predictor
+# Baby Growth Predictor
 
-A simple web application that estimates baby weight based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
+A comprehensive web application that estimates baby growth measurements (weight, length, and head circumference) based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
 
 ## Features
 
 - **Age Range**: 0-24 months
 - **Gender Support**: Boys and Girls
 - **Percentile Options**: 2nd, 5th, 10th, 25th, 50th (median), 75th, 90th, 95th, and 98th percentiles
-- **Unit Conversion**: Toggle between kg and lbs with automatic conversion
-- **Dual Display**: Shows weight in both selected and converted units
+- **Comprehensive Measurements**: Weight, length, and head circumference estimates
+- **Unit Conversion**: Toggle between metric and imperial units with automatic conversion
+- **Dual Display**: Shows measurements in both selected and converted units
 - **Lbs/Oz Format**: Displays pounds and ounces instead of decimal pounds
+- **Length Display**: Shows length in feet/inches or cm format
 - **Responsive Design**: Works on desktop and mobile devices
 - **Real-time Calculation**: Instant weight estimates based on WHO data
 
@@ -20,14 +22,18 @@ A simple web application that estimates baby weight based on WHO (World Health O
 3. **Select Gender**: Choose between Boy or Girl
 4. **Choose Percentile**: Select the desired percentile for weight estimation
 5. **Select Unit**: Toggle between kg and lbs for your preferred weight unit
-6. **Calculate**: Click the "Calculate Weight" button to get the estimated weight
-7. **View Results**: See weight in both your selected unit and the converted unit
+6. **Calculate**: Click the "Calculate Growth Estimates" button to get all measurements
+7. **View Results**: See weight, length, and head circumference in both your selected unit and the converted unit
 
 ## Data Source
 
 The application uses WHO Child Growth Standards data from the CSV files:
 - `WHO-Boys-Weight-for-age-Percentiles.csv`
 - `WHO-Girls-Weight-for-age Percentiles.csv`
+- `WHO-Boys-Length-for-age-Percentiles.csv`
+- `WHO-Girls-Length-for-age-Percentiles.csv`
+- `WHO-Boys-Head-Circumference-for-age-Percentiles.csv`
+- `WHO-Girls-Head-Circumference-for-age-Percentiles.csv`
 
 ## Technical Details
 
@@ -69,9 +75,14 @@ baby-weight-predictor/
 
 ## Example Usage
 
-- **6-month-old boy at 50th percentile**: ~7.93 kg (~17 lbs 8 oz)
-- **12-month-old girl at 75th percentile**: ~10.38 kg (~22 lbs 14 oz)
-- **18-month-old boy at 25th percentile**: ~8.75 kg (~19 lbs 5 oz)
+- **6-month-old boy at 50th percentile**: 
+  - Weight: ~7.93 kg (~17 lbs 8 oz)
+  - Length: ~67.6 cm (~2' 2.6")
+  - Head Circumference: ~43.3 cm (~17.0")
+- **12-month-old girl at 75th percentile**:
+  - Weight: ~10.38 kg (~22 lbs 14 oz)
+  - Length: ~75.8 cm (~2' 5.8")
+  - Head Circumference: ~45.8 cm (~18.0")
 
 ## Notes
 
