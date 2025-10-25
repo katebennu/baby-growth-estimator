@@ -15,7 +15,7 @@ body {
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -23,25 +23,25 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     color: white;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 header p {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
 main {
     background: white;
     border-radius: 15px;
-    padding: 40px;
+    padding: 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     flex: 1;
 }
@@ -49,20 +49,20 @@ main {
 /* Tab Styling */
 .tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+    gap: 8px;
+    margin-bottom: 20px;
     border-bottom: 2px solid #e1e5e9;
 }
 
 .tab-button {
     flex: 1;
-    padding: 12px 20px;
+    padding: 8px 12px;
     background: transparent;
     color: #666;
     border: none;
     border-bottom: 3px solid transparent;
     border-radius: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -107,25 +107,32 @@ main {
     }
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 0;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-weight: 600;
     color: #555;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
 }
 
 input[type="number"],
 select {
     width: 100%;
-    padding: 12px 16px;
+    padding: 8px 12px;
     border: 2px solid #e1e5e9;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     background: #f8f9fa;
 }
@@ -143,7 +150,7 @@ select:focus {
     display: flex;
     background: #f8f9fa;
     border-radius: 8px;
-    padding: 4px;
+    padding: 3px;
     border: 2px solid #e1e5e9;
     transition: all 0.3s ease;
 }
@@ -159,12 +166,13 @@ select:focus {
 
 .toggle-label {
     flex: 1;
-    padding: 10px 16px;
+    padding: 6px 12px;
     text-align: center;
     cursor: pointer;
     border-radius: 6px;
     transition: all 0.3s ease;
     font-weight: 600;
+    font-size: 0.9rem;
     color: #666;
     margin: 0;
 }
@@ -177,16 +185,16 @@ select:focus {
 
 button {
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 button:hover {
@@ -199,8 +207,8 @@ button:active {
 }
 
 .result {
-    margin-top: 30px;
-    padding: 25px;
+    margin-top: 15px;
+    padding: 15px;
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     border-radius: 12px;
     text-align: center;
@@ -209,42 +217,42 @@ button:active {
 }
 
 .result h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .measurement-section {
-    margin-bottom: 25px;
-    padding: 15px;
+    margin-bottom: 0;
+    padding: 10px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     backdrop-filter: blur(10px);
 }
 
 .measurement-section h4 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    margin-bottom: 8px;
     opacity: 0.9;
 }
 
 .weight-display, .length-display, .head-display {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .unit {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: normal;
-    margin-left: 8px;
+    margin-left: 6px;
 }
 
 .weight-conversion, .length-conversion, .head-conversion {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 0;
     opacity: 0.8;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     line-height: 1.2;
@@ -252,26 +260,27 @@ button:active {
 
 /* Special styling for lbs/oz display */
 .weight-display.lbs-oz {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
 }
 
 .weight-conversion.lbs-oz {
-    font-size: 1.2rem;
+    font-size: 0.95rem;
 }
 
 .measurement-info {
-    font-size: 1rem;
+    font-size: 0.9rem;
     opacity: 0.9;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .error {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 10px;
+    padding: 10px;
     background: #ff6b6b;
     color: white;
     border-radius: 8px;
     text-align: center;
+    font-size: 0.9rem;
     animation: slideIn 0.5s ease;
 }
 
@@ -281,10 +290,10 @@ button:active {
 
 footer {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 15px;
     color: white;
     opacity: 0.8;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 @keyframes slideIn {
@@ -301,32 +310,37 @@ footer {
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding: 10px;
     }
-    
+
     header h1 {
-        font-size: 2rem;
+        font-size: 1.6rem;
     }
-    
+
     main {
-        padding: 25px;
+        padding: 20px;
     }
-    
-    .weight-display {
-        font-size: 2.5rem;
+
+    .weight-display, .length-display, .head-display {
+        font-size: 1.8rem;
     }
 }
 
 @media (max-width: 480px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
     header h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
-    
+
     main {
-        padding: 20px;
+        padding: 15px;
     }
-    
-    .weight-display {
-        font-size: 2rem;
+
+    .weight-display, .length-display, .head-display {
+        font-size: 1.6rem;
     }
 }
