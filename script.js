@@ -169,23 +169,36 @@ const girlsHeadData = [
     [24,1,47.1822,0.02957,44.39184,44.88734,45.39421,46.24117,47.1822,48.12323,48.97019,49.47706,49.9725553]
 ];
 
-// Percentile mapping
-const percentileMap = {
-    '2': 4,   // 2nd percentile column index
-    '5': 5,   // 5th percentile column index
-    '10': 6,  // 10th percentile column index
-    '25': 7,  // 25th percentile column index
-    '50': 8,  // 50th percentile column index
-    '75': 9,  // 75th percentile column index
-    '90': 10, // 90th percentile column index
-    '95': 11, // 95th percentile column index
-    '98': 12  // 98th percentile column index
-};
+// Function to convert percentile to z-score using approximation
+function percentileToZScore(percentile) {
+    // Convert percentile (1-99) to probability (0.01-0.99)
+    const p = percentile / 100;
+
+    // Rational approximation of inverse normal CDF (Abramowitz and Stegun)
+    // This is accurate to about 4.5 × 10−4
+    const c0 = 2.515517;
+    const c1 = 0.802853;
+    const c2 = 0.010328;
+    const d1 = 1.432788;
+    const d2 = 0.189269;
+    const d3 = 0.001308;
+
+    let z;
+    if (p < 0.5) {
+        const t = Math.sqrt(-2 * Math.log(p));
+        z = -(t - ((c2 * t + c1) * t + c0) / (((d3 * t + d2) * t + d1) * t + 1));
+    } else {
+        const t = Math.sqrt(-2 * Math.log(1 - p));
+        z = t - ((c2 * t + c1) * t + c0) / (((d3 * t + d2) * t + d1) * t + 1);
+    }
+
+    return z;
+}
 
 // Function to calculate measurement using WHO LMS method
 function calculateMeasurement(age, gender, percentile, measurementType) {
     let data;
-    
+
     switch (measurementType) {
         case 'weight':
             data = gender === 'boy' ? boysWeightData : girlsWeightData;
@@ -199,22 +212,31 @@ function calculateMeasurement(age, gender, percentile, measurementType) {
         default:
             throw new Error('Invalid measurement type');
     }
-    
-    const percentileIndex = percentileMap[percentile];
-    
-    if (!percentileIndex) {
-        throw new Error('Invalid percentile selected');
-    }
-    
+
     // Find the row for the given age
     const ageRow = data.find(row => row[0] === age);
     if (!ageRow) {
         throw new Error('Age not found in data');
     }
-    
-    // Get the percentile value
-    const measurementValue = ageRow[percentileIndex];
-    
+
+    // Extract LMS parameters
+    const L = ageRow[1];  // Box-Cox power (skewness)
+    const M = ageRow[2];  // Median
+    const S = ageRow[3];  // Coefficient of variation
+
+    // Convert percentile to z-score
+    const z = percentileToZScore(percentile);
+
+    // Calculate measurement using LMS formula
+    let measurementValue;
+    if (Math.abs(L) < 0.01) {
+        // When L is close to 0, use exponential formula
+        measurementValue = M * Math.exp(S * z);
+    } else {
+        // Standard LMS formula
+        measurementValue = M * Math.pow(1 + L * S * z, 1 / L);
+    }
+
     return Math.round(measurementValue * 100) / 100; // Round to 2 decimal places
 }
 
@@ -229,18 +251,21 @@ function calculateAllMeasurements(age, gender, percentile) {
 
 // Function to get percentile description
 function getPercentileDescription(percentile) {
-    const descriptions = {
-        '2': '2nd percentile (2.3rd)',
-        '5': '5th percentile',
-        '10': '10th percentile',
-        '25': '25th percentile',
-        '50': '50th percentile (median)',
-        '75': '75th percentile',
-        '90': '90th percentile',
-        '95': '95th percentile',
-        '98': '98th percentile (97.7th)'
-    };
-    return descriptions[percentile] || percentile;
+    const p = parseInt(percentile);
+
+    // Add ordinal suffix (st, nd, rd, th)
+    let suffix = 'th';
+    if (p % 100 >= 11 && p % 100 <= 13) {
+        suffix = 'th';
+    } else if (p % 10 === 1) {
+        suffix = 'st';
+    } else if (p % 10 === 2) {
+        suffix = 'nd';
+    } else if (p % 10 === 3) {
+        suffix = 'rd';
+    }
+
+    return `${p}${suffix} percentile`;
 }
 
 // Function to convert kg to lbs
@@ -614,15 +639,15 @@ function validateForm(age, gender, percentile) {
     if (!age || age < 0 || age > 24) {
         return 'Please enter a valid age between 0 and 24 months';
     }
-    
+
     if (!gender) {
         return 'Please select a gender';
     }
-    
-    if (!percentile) {
-        return 'Please select a percentile';
+
+    if (!percentile || percentile < 1 || percentile > 99) {
+        return 'Please enter a valid percentile between 1 and 99';
     }
-    
+
     return null;
 }
 
@@ -682,17 +707,17 @@ function syncInputs() {
     });
 
     // Percentile synchronization
-    const percentileSelects = [
+    const percentileInputs = [
         document.getElementById('weight-percentile'),
         document.getElementById('length-percentile'),
         document.getElementById('head-percentile')
     ];
 
-    percentileSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            percentileSelects.forEach(otherSelect => {
-                if (otherSelect !== select) {
-                    otherSelect.value = select.value;
+    percentileInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            percentileInputs.forEach(otherInput => {
+                if (otherInput !== input) {
+                    otherInput.value = input.value;
                 }
             });
         });
