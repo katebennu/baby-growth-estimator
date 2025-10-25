@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baby Growth Predictor</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -69,7 +70,7 @@
                 </form>
 
                 <div id="weight-result" class="result hidden">
-                    <h3>Weight Estimate</h3>
+                    <h3>WHO Weight Growth Curves</h3>
 
                     <div class="measurement-section">
                         <div class="weight-display">
@@ -80,6 +81,10 @@
                             <span id="convertedWeight">0</span>
                             <span id="convertedUnit" class="unit">lbs</span>
                         </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="weight-chart"></canvas>
                     </div>
 
                     <div class="measurement-info">
@@ -141,7 +146,7 @@
                 </form>
 
                 <div id="length-result" class="result hidden">
-                    <h3>Length Estimate</h3>
+                    <h3>WHO Length Growth Curves</h3>
 
                     <div class="measurement-section">
                         <div class="length-display">
@@ -152,6 +157,10 @@
                             <span id="convertedLength">0</span>
                             <span id="convertedLengthUnit" class="unit">inches</span>
                         </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="length-chart"></canvas>
                     </div>
 
                     <div class="measurement-info">
@@ -213,7 +222,7 @@
                 </form>
 
                 <div id="head-result" class="result hidden">
-                    <h3>Head Circumference Estimate</h3>
+                    <h3>WHO Head Circumference Growth Curves</h3>
 
                     <div class="measurement-section">
                         <div class="head-display">
@@ -224,6 +233,10 @@
                             <span id="convertedHead">0</span>
                             <span id="convertedHeadUnit" class="unit">inches</span>
                         </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="head-chart"></canvas>
                     </div>
 
                     <div class="measurement-info">

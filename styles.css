@@ -209,38 +209,40 @@ button:active {
 .result {
     margin-top: 15px;
     padding: 15px;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     border-radius: 12px;
     text-align: center;
-    color: white;
+    color: #333;
     animation: slideIn 0.5s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .result h3 {
     font-size: 1.2rem;
     margin-bottom: 12px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    color: #667eea;
+    font-weight: 700;
 }
 
 .measurement-section {
     margin-bottom: 0;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(102, 126, 234, 0.05);
     border-radius: 8px;
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(102, 126, 234, 0.1);
 }
 
 .measurement-section h4 {
     font-size: 1rem;
     margin-bottom: 8px;
-    opacity: 0.9;
+    color: #555;
 }
 
 .weight-display, .length-display, .head-display {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 6px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    color: #667eea;
 }
 
 .unit {
@@ -253,8 +255,7 @@ button:active {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0;
-    opacity: 0.8;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    color: #666;
     line-height: 1.2;
 }
 
@@ -269,8 +270,20 @@ button:active {
 
 .measurement-info {
     font-size: 0.9rem;
-    opacity: 0.9;
+    color: #555;
     margin-top: 10px;
+}
+
+.chart-container {
+    margin: 15px 0;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e1e5e9;
+}
+
+.chart-container canvas {
+    max-height: 300px;
 }
 
 .error {
