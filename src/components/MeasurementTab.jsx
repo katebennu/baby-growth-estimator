@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import MeasurementForm from './MeasurementForm'
 import MeasurementResult from './MeasurementResult'
+import DefaultChart from './DefaultChart'
 
 function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
   const [result, setResult] = useState(null)
@@ -38,11 +39,13 @@ function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
         onError={handleError}
       />
 
-      {result && (
+      {result ? (
         <MeasurementResult
           type={type}
           {...result}
         />
+      ) : (
+        <DefaultChart type={type} />
       )}
 
       {error && (
