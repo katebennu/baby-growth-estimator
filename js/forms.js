@@ -176,64 +176,10 @@ export function setupHeadForm() {
     });
 }
 
-// Unit toggle change handlers
+// Unit toggle change handlers - No longer needed, always using imperial units
 export function setupUnitToggles() {
-    // Weight unit toggle change
-    document.querySelectorAll('input[name="weight-unit"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const resultDiv = document.getElementById('weight-result');
-            if (!resultDiv.classList.contains('hidden')) {
-                const age = parseInt(document.getElementById('weight-age').value);
-                const gender = document.querySelector('input[name="weight-gender"]:checked')?.value;
-                const percentile = document.getElementById('weight-percentile').value;
-
-                try {
-                    const weight = calculateMeasurement(age, gender, percentile, 'weight');
-                    showWeightResult(weight, age, gender, percentile);
-                } catch (error) {
-                    resultDiv.classList.add('hidden');
-                }
-            }
-        });
-    });
-
-    // Length unit toggle change
-    document.querySelectorAll('input[name="length-unit"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const resultDiv = document.getElementById('length-result');
-            if (!resultDiv.classList.contains('hidden')) {
-                const age = parseInt(document.getElementById('length-age').value);
-                const gender = document.querySelector('input[name="length-gender"]:checked')?.value;
-                const percentile = document.getElementById('length-percentile').value;
-
-                try {
-                    const length = calculateMeasurement(age, gender, percentile, 'length');
-                    showLengthResult(length, age, gender, percentile);
-                } catch (error) {
-                    resultDiv.classList.add('hidden');
-                }
-            }
-        });
-    });
-
-    // Head unit toggle change
-    document.querySelectorAll('input[name="head-unit"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const resultDiv = document.getElementById('head-result');
-            if (!resultDiv.classList.contains('hidden')) {
-                const age = parseInt(document.getElementById('head-age').value);
-                const gender = document.querySelector('input[name="head-gender"]:checked')?.value;
-                const percentile = document.getElementById('head-percentile').value;
-
-                try {
-                    const head = calculateMeasurement(age, gender, percentile, 'head');
-                    showHeadResult(head, age, gender, percentile);
-                } catch (error) {
-                    resultDiv.classList.add('hidden');
-                }
-            }
-        });
-    });
+    // Function kept for backwards compatibility but does nothing
+    // Units are now hardcoded to imperial (lbs/inches) in getSelectedUnit()
 }
 
 // Tab button event listeners

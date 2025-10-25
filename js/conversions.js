@@ -65,5 +65,10 @@ export function formatHeadCircumference(head, unit) {
 
 // Function to get selected unit for a specific tab
 export function getSelectedUnit(tabName) {
-    return document.querySelector(`input[name="${tabName}-unit"]:checked`).value;
+    // Always return imperial units (lbs for weight, inches for length/head)
+    if (tabName === 'weight') {
+        return 'lbs';
+    } else {
+        return 'inches';
+    }
 }
