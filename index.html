@@ -61,12 +61,12 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="weight-age">
-                                Age (months)
-                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                                Age: <span id="weight-age-display">6</span> months
+                                <span class="tooltip" aria-label="Slide to select your baby's age from 0 to 24 months.">ⓘ</span>
                             </label>
-                            <input type="number" id="weight-age" name="age" min="0" max="24" required
-                                   aria-describedby="weight-age-hint" placeholder="0-24">
-                            <span class="input-hint" id="weight-age-hint">Whole months only (0-24)</span>
+                            <input type="range" id="weight-age" name="age" min="0" max="24" value="6" class="age-slider"
+                                   aria-describedby="weight-age-hint">
+                            <span class="input-hint" id="weight-age-hint">0-24 months</span>
                         </div>
 
                         <div class="form-group">
@@ -84,12 +84,23 @@
 
                         <div class="form-group">
                             <label for="weight-percentile">
-                                Percentile (1-99)
+                                Percentile: <span id="weight-percentile-display">50</span>th
                                 <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
                             </label>
-                            <input type="number" id="weight-percentile" name="percentile" min="1" max="99" step="1"
-                                   placeholder="e.g., 50" required aria-describedby="weight-percentile-hint">
-                            <span class="input-hint" id="weight-percentile-hint">Try 50 for average size</span>
+                            <input type="range" id="weight-percentile" name="percentile" min="1" max="99" value="50" class="percentile-slider"
+                                   aria-describedby="weight-percentile-hint">
+                            <div class="slider-labels">
+                                <span>1st</span>
+                                <span>25th</span>
+                                <span>50th</span>
+                                <span>75th</span>
+                                <span>99th</span>
+                            </div>
+                            <div class="preset-buttons">
+                                <button type="button" class="preset-btn" data-percentile="25">25th</button>
+                                <button type="button" class="preset-btn" data-percentile="50">50th</button>
+                                <button type="button" class="preset-btn" data-percentile="75">75th</button>
+                            </div>
                         </div>
                     </div>
 
@@ -131,12 +142,12 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="length-age">
-                                Age (months)
-                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                                Age: <span id="length-age-display">6</span> months
+                                <span class="tooltip" aria-label="Slide to select your baby's age from 0 to 24 months.">ⓘ</span>
                             </label>
-                            <input type="number" id="length-age" name="age" min="0" max="24" required
-                                   aria-describedby="length-age-hint" placeholder="0-24">
-                            <span class="input-hint" id="length-age-hint">Whole months only (0-24)</span>
+                            <input type="range" id="length-age" name="age" min="0" max="24" value="6" class="age-slider"
+                                   aria-describedby="length-age-hint">
+                            <span class="input-hint" id="length-age-hint">0-24 months</span>
                         </div>
 
                         <div class="form-group">
@@ -154,12 +165,23 @@
 
                         <div class="form-group">
                             <label for="length-percentile">
-                                Percentile (1-99)
+                                Percentile: <span id="length-percentile-display">50</span>th
                                 <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
                             </label>
-                            <input type="number" id="length-percentile" name="percentile" min="1" max="99" step="1"
-                                   placeholder="e.g., 50" required aria-describedby="length-percentile-hint">
-                            <span class="input-hint" id="length-percentile-hint">Try 50 for average size</span>
+                            <input type="range" id="length-percentile" name="percentile" min="1" max="99" value="50" class="percentile-slider"
+                                   aria-describedby="length-percentile-hint">
+                            <div class="slider-labels">
+                                <span>1st</span>
+                                <span>25th</span>
+                                <span>50th</span>
+                                <span>75th</span>
+                                <span>99th</span>
+                            </div>
+                            <div class="preset-buttons">
+                                <button type="button" class="preset-btn" data-percentile="25">25th</button>
+                                <button type="button" class="preset-btn" data-percentile="50">50th</button>
+                                <button type="button" class="preset-btn" data-percentile="75">75th</button>
+                            </div>
                         </div>
                     </div>
 
@@ -201,12 +223,12 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="head-age">
-                                Age (months)
-                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                                Age: <span id="head-age-display">6</span> months
+                                <span class="tooltip" aria-label="Slide to select your baby's age from 0 to 24 months.">ⓘ</span>
                             </label>
-                            <input type="number" id="head-age" name="age" min="0" max="24" required
-                                   aria-describedby="head-age-hint" placeholder="0-24">
-                            <span class="input-hint" id="head-age-hint">Whole months only (0-24)</span>
+                            <input type="range" id="head-age" name="age" min="0" max="24" value="6" class="age-slider"
+                                   aria-describedby="head-age-hint">
+                            <span class="input-hint" id="head-age-hint">0-24 months</span>
                         </div>
 
                         <div class="form-group">
@@ -224,12 +246,23 @@
 
                         <div class="form-group">
                             <label for="head-percentile">
-                                Percentile (1-99)
+                                Percentile: <span id="head-percentile-display">50</span>th
                                 <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
                             </label>
-                            <input type="number" id="head-percentile" name="percentile" min="1" max="99" step="1"
-                                   placeholder="e.g., 50" required aria-describedby="head-percentile-hint">
-                            <span class="input-hint" id="head-percentile-hint">Try 50 for average size</span>
+                            <input type="range" id="head-percentile" name="percentile" min="1" max="99" value="50" class="percentile-slider"
+                                   aria-describedby="head-percentile-hint">
+                            <div class="slider-labels">
+                                <span>1st</span>
+                                <span>25th</span>
+                                <span>50th</span>
+                                <span>75th</span>
+                                <span>99th</span>
+                            </div>
+                            <div class="preset-buttons">
+                                <button type="button" class="preset-btn" data-percentile="25">25th</button>
+                                <button type="button" class="preset-btn" data-percentile="50">50th</button>
+                                <button type="button" class="preset-btn" data-percentile="75">75th</button>
+                            </div>
                         </div>
                     </div>
 

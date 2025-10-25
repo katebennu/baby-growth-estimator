@@ -317,6 +317,179 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
 }
 
+/* Age Slider Styling */
+.age-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #e1e5e9 0%, #11998e 100%);
+    outline: none;
+    -webkit-appearance: none;
+    margin: 8px 0;
+}
+
+.age-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.age-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.4);
+}
+
+.age-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.age-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.4);
+}
+
+.age-slider::-moz-range-track {
+    background: linear-gradient(to right, #e1e5e9 0%, #11998e 100%);
+    height: 6px;
+    border-radius: 3px;
+}
+
+.age-slider:focus {
+    outline: none;
+}
+
+.age-slider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.2);
+}
+
+.age-slider:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.2);
+}
+
+/* Percentile Slider Styling */
+.percentile-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #38ef7d 0%, #11998e 50%, #0d7c72 100%);
+    outline: none;
+    -webkit-appearance: none;
+    margin: 8px 0 4px 0;
+}
+
+.percentile-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.percentile-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.4);
+}
+
+.percentile-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.percentile-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.4);
+}
+
+.percentile-slider::-moz-range-track {
+    background: linear-gradient(to right, #38ef7d 0%, #11998e 50%, #0d7c72 100%);
+    height: 6px;
+    border-radius: 3px;
+}
+
+.percentile-slider:focus {
+    outline: none;
+}
+
+.percentile-slider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.2);
+}
+
+.percentile-slider:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.2);
+}
+
+/* Slider Labels */
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: #888;
+    margin-top: 2px;
+    padding: 0 2px;
+}
+
+.slider-labels span {
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+/* Preset Buttons */
+.preset-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.preset-btn {
+    flex: 1;
+    padding: 6px 8px;
+    background: white;
+    color: #11998e;
+    border: 1.5px solid #11998e;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0;
+    width: auto;
+}
+
+.preset-btn:hover {
+    background: #11998e;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.2);
+}
+
+.preset-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(17, 153, 142, 0.2);
+}
+
 /* Unit Toggle Styling */
 .unit-toggle {
     display: flex;
@@ -444,6 +617,38 @@ button:active {
     font-size: 0.9rem;
     color: #555;
     margin-top: 10px;
+}
+
+.measurement-info p {
+    margin-bottom: 10px;
+}
+
+.practical-tips {
+    background: rgba(17, 153, 142, 0.05);
+    border-left: 3px solid #11998e;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.practical-tips strong {
+    color: #0d7c72;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.practical-tips ul {
+    margin: 5px 0 0 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.practical-tips li {
+    font-size: 0.8rem;
+    color: #555;
+    margin: 4px 0;
+    line-height: 1.4;
 }
 
 .chart-container {

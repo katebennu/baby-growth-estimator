@@ -1,8 +1,55 @@
 // UI module - Display functions
 
-import { kgToLbs, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from './conversions.js';
+import { kgToLbs, cmToInches, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from './conversions.js';
 import { getPercentileDescription } from './calculations.js';
 import { createGrowthChart } from './charts.js';
+
+// Helper function to get practical context for weight
+function getWeightContext(weightKg, age) {
+    const weightLbs = kgToLbs(weightKg);
+    const contexts = [];
+
+    // Car seat recommendations
+    if (weightLbs < 22) {
+        contexts.push("Most infant car seats support up to 22-35 lbs");
+    } else if (weightLbs < 40) {
+        contexts.push("Convertible car seat recommended (up to 40-65 lbs)");
+    }
+
+    // Stroller weight capacity
+    if (weightLbs < 35) {
+        contexts.push("Standard strollers support 35-50 lbs");
+    }
+
+    return contexts;
+}
+
+// Helper function to get practical context for length
+function getLengthContext(lengthCm, age) {
+    const lengthInches = cmToInches(lengthCm);
+    const contexts = [];
+
+    // Sleep space recommendations
+    if (lengthInches < 25) {
+        contexts.push("Bassinet or cradle suitable (typically up to 25\")");
+    } else if (lengthInches < 35) {
+        contexts.push("Transition to crib recommended (fits up to ~35\")");
+    } else {
+        contexts.push("Standard crib appropriate (up to ~52\")");
+    }
+
+    return contexts;
+}
+
+// Helper function to get practical context for head circumference
+function getHeadContext(headCm) {
+    const contexts = [];
+
+    // Note: Hat sizes vary significantly by brand
+    // Removed specific recommendations to avoid inaccuracy
+
+    return contexts;
+}
 
 // Function to show weight result
 export function showWeightResult(weight, age, gender, percentile) {
@@ -46,7 +93,18 @@ export function showWeightResult(weight, age, gender, percentile) {
 
     const genderText = gender === 'boy' ? 'boy' : 'girl';
     const percentileDesc = getPercentileDescription(percentile);
-    document.getElementById('weight-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    // Build info text with practical context
+    const contexts = getWeightContext(weight, age);
+    let infoHTML = `<p>A ${age}-month-old ${genderText} at the ${percentileDesc}</p>`;
+    if (contexts.length > 0) {
+        infoHTML += '<div class="practical-tips"><strong>Planning Tips:</strong><ul>';
+        contexts.forEach(context => {
+            infoHTML += `<li>${context}</li>`;
+        });
+        infoHTML += '</ul></div>';
+    }
+    document.getElementById('weight-info').innerHTML = infoHTML;
 
     // Create chart
     createGrowthChart('weight-chart', 'weight', gender, age, percentile, weight);
@@ -128,7 +186,18 @@ export function showLengthResult(length, age, gender, percentile) {
 
     const genderText = gender === 'boy' ? 'boy' : 'girl';
     const percentileDesc = getPercentileDescription(percentile);
-    document.getElementById('length-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    // Build info text with practical context
+    const contexts = getLengthContext(length, age);
+    let infoHTML = `<p>A ${age}-month-old ${genderText} at the ${percentileDesc}</p>`;
+    if (contexts.length > 0) {
+        infoHTML += '<div class="practical-tips"><strong>Planning Tips:</strong><ul>';
+        contexts.forEach(context => {
+            infoHTML += `<li>${context}</li>`;
+        });
+        infoHTML += '</ul></div>';
+    }
+    document.getElementById('length-info').innerHTML = infoHTML;
 
     // Create chart
     createGrowthChart('length-chart', 'length', gender, age, percentile, length);
@@ -208,7 +277,18 @@ export function showHeadResult(head, age, gender, percentile) {
 
     const genderText = gender === 'boy' ? 'boy' : 'girl';
     const percentileDesc = getPercentileDescription(percentile);
-    document.getElementById('head-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    // Build info text with practical context
+    const contexts = getHeadContext(head);
+    let infoHTML = `<p>A ${age}-month-old ${genderText} at the ${percentileDesc}</p>`;
+    if (contexts.length > 0) {
+        infoHTML += '<div class="practical-tips"><strong>Planning Tips:</strong><ul>';
+        contexts.forEach(context => {
+            infoHTML += `<li>${context}</li>`;
+        });
+        infoHTML += '</ul></div>';
+    }
+    document.getElementById('head-info').innerHTML = infoHTML;
 
     // Create chart
     createGrowthChart('head-chart', 'head', gender, age, percentile, head);

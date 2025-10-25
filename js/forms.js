@@ -45,20 +45,65 @@ export function switchTab(tabName) {
     document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 }
 
+// Setup percentile preset buttons
+function setupPresetButtons() {
+    const presetButtons = document.querySelectorAll('.preset-btn');
+
+    presetButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const percentile = this.getAttribute('data-percentile');
+
+            // Update all percentile sliders and displays
+            const percentileInputs = [
+                document.getElementById('weight-percentile'),
+                document.getElementById('length-percentile'),
+                document.getElementById('head-percentile')
+            ];
+
+            const percentileDisplays = [
+                document.getElementById('weight-percentile-display'),
+                document.getElementById('length-percentile-display'),
+                document.getElementById('head-percentile-display')
+            ];
+
+            percentileInputs.forEach(input => {
+                input.value = percentile;
+            });
+
+            percentileDisplays.forEach(display => {
+                display.textContent = percentile;
+            });
+        });
+    });
+}
+
 // Synchronize inputs across tabs
 export function syncInputs() {
-    // Age synchronization
+    // Setup preset buttons
+    setupPresetButtons();
+    // Age synchronization with slider display update
     const ageInputs = [
         document.getElementById('weight-age'),
         document.getElementById('length-age'),
         document.getElementById('head-age')
     ];
 
-    ageInputs.forEach(input => {
+    const ageDisplays = [
+        document.getElementById('weight-age-display'),
+        document.getElementById('length-age-display'),
+        document.getElementById('head-age-display')
+    ];
+
+    ageInputs.forEach((input, index) => {
         input.addEventListener('input', function() {
-            ageInputs.forEach(otherInput => {
+            const value = this.value;
+            // Update this slider's display
+            ageDisplays[index].textContent = value;
+            // Sync to other tabs
+            ageInputs.forEach((otherInput, otherIndex) => {
                 if (otherInput !== input) {
-                    otherInput.value = input.value;
+                    otherInput.value = value;
+                    ageDisplays[otherIndex].textContent = value;
                 }
             });
         });
@@ -86,18 +131,29 @@ export function syncInputs() {
         });
     });
 
-    // Percentile synchronization
+    // Percentile synchronization with slider display update
     const percentileInputs = [
         document.getElementById('weight-percentile'),
         document.getElementById('length-percentile'),
         document.getElementById('head-percentile')
     ];
 
-    percentileInputs.forEach(input => {
+    const percentileDisplays = [
+        document.getElementById('weight-percentile-display'),
+        document.getElementById('length-percentile-display'),
+        document.getElementById('head-percentile-display')
+    ];
+
+    percentileInputs.forEach((input, index) => {
         input.addEventListener('input', function() {
-            percentileInputs.forEach(otherInput => {
+            const value = this.value;
+            // Update this slider's display
+            percentileDisplays[index].textContent = value;
+            // Sync to other tabs
+            percentileInputs.forEach((otherInput, otherIndex) => {
                 if (otherInput !== input) {
-                    otherInput.value = input.value;
+                    otherInput.value = value;
+                    percentileDisplays[otherIndex].textContent = value;
                 }
             });
         });

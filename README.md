@@ -2,8 +2,6 @@
 
 A web application that estimates baby growth measurements (weight, length, and head circumference) based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
 
-## 🌐 Live Demo
-
 **[View Live Application](https://katebennu.github.io/baby-growth-estimator/)**
 
 ## Features
