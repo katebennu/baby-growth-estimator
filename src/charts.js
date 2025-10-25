@@ -1,11 +1,33 @@
 // Charts module - Chart.js functions
 
 import {
+    Chart,
+    LineController,
+    LineElement,
+    PointElement,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend
+} from 'chart.js';
+
+import {
     boysWeightData, girlsWeightData,
     boysLengthData, girlsLengthData,
     boysHeadData, girlsHeadData
 } from './data.js';
 import { getPercentileDescription } from './calculations.js';
+
+// Register Chart.js components
+Chart.register(
+    LineController,
+    LineElement,
+    PointElement,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend
+);
 
 // Store chart instances
 let weightChart = null;
@@ -13,17 +35,34 @@ let lengthChart = null;
 let headChart = null;
 
 // Function to create growth chart
-export function createGrowthChart(canvasId, measurementType, gender, selectedAge = null, selectedPercentile = null, selectedValue = null) {
-    const canvas = document.getElementById(canvasId);
+export function createGrowthChart(canvasOrId, measurementType, gender, selectedAge = null, selectedPercentile = null, selectedValue = null) {
+    // Support both canvas element (from React ref) and canvas ID (from vanilla JS)
+    const canvas = typeof canvasOrId === 'string'
+        ? document.getElementById(canvasOrId)
+        : canvasOrId;
+
+    if (!canvas) {
+        console.error('Canvas element not found:', canvasOrId);
+        return;
+    }
+
     const ctx = canvas.getContext('2d');
 
-    // Destroy existing chart if it exists
-    if (canvasId === 'weight-chart' && weightChart) {
+    // Destroy existing chart if it exists (check by measurement type or canvas)
+    if (measurementType === 'weight' && weightChart) {
         weightChart.destroy();
-    } else if (canvasId === 'length-chart' && lengthChart) {
+        weightChart = null;
+    } else if (measurementType === 'length' && lengthChart) {
         lengthChart.destroy();
-    } else if (canvasId === 'head-chart' && headChart) {
+        lengthChart = null;
+    } else if (measurementType === 'head' && headChart) {
         headChart.destroy();
+        headChart = null;
+    }
+
+    // Also check if there's a chart instance already attached to this canvas
+    if (canvas.chart) {
+        canvas.chart.destroy();
     }
 
     // Get data source
@@ -146,14 +185,17 @@ export function createGrowthChart(canvasId, measurementType, gender, selectedAge
         }
     });
 
-    // Store chart instance
-    if (canvasId === 'weight-chart') {
+    // Store chart instance (by measurement type and also on the canvas element)
+    if (measurementType === 'weight') {
         weightChart = chart;
-    } else if (canvasId === 'length-chart') {
+    } else if (measurementType === 'length') {
         lengthChart = chart;
-    } else if (canvasId === 'head-chart') {
+    } else if (measurementType === 'head') {
         headChart = chart;
     }
+
+    // Also store on canvas element for easier cleanup in React
+    canvas.chart = chart;
 }
 
 // Function to show chart with just percentile curves (no selected point)

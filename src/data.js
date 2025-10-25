@@ -1,12 +1,23 @@
 // Data module - CSV loading and parsing
 
 // WHO Growth Data (loaded from CSV files)
-export let boysWeightData = [];
-export let girlsWeightData = [];
-export let boysLengthData = [];
-export let girlsLengthData = [];
-export let boysHeadData = [];
-export let girlsHeadData = [];
+// Using objects to allow mutation after initial export
+const growthData = {
+  boysWeight: [],
+  girlsWeight: [],
+  boysLength: [],
+  girlsLength: [],
+  boysHead: [],
+  girlsHead: []
+};
+
+// Export getters for the data arrays
+export const boysWeightData = growthData.boysWeight;
+export const girlsWeightData = growthData.girlsWeight;
+export const boysLengthData = growthData.boysLength;
+export const girlsLengthData = growthData.girlsLength;
+export const boysHeadData = growthData.boysHead;
+export const girlsHeadData = growthData.girlsHead;
 
 // CSV Parser function
 function parseCSV(csvText) {
@@ -53,12 +64,24 @@ export async function loadAllData() {
             loadCSV('WHO-Girls-Head-Circumference-for-age-Percentiles.csv')
         ]);
 
-        boysWeightData = results[0];
-        girlsWeightData = results[1];
-        boysLengthData = results[2];
-        girlsLengthData = results[3];
-        boysHeadData = results[4];
-        girlsHeadData = results[5];
+        // Clear and populate the arrays
+        growthData.boysWeight.length = 0;
+        growthData.boysWeight.push(...results[0]);
+
+        growthData.girlsWeight.length = 0;
+        growthData.girlsWeight.push(...results[1]);
+
+        growthData.boysLength.length = 0;
+        growthData.boysLength.push(...results[2]);
+
+        growthData.girlsLength.length = 0;
+        growthData.girlsLength.push(...results[3]);
+
+        growthData.boysHead.length = 0;
+        growthData.boysHead.push(...results[4]);
+
+        growthData.girlsHead.length = 0;
+        growthData.girlsHead.push(...results[5]);
 
         console.log('All WHO growth data loaded successfully');
         return true;
