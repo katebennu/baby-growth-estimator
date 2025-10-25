@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Baby Growth Predictor is a client-side web application that estimates baby growth measurements (weight, length, head circumference) based on WHO (World Health Organization) growth standards. The app covers ages 0-24 months with support for both genders and multiple percentiles (2nd through 98th).
 
+**Data Source**: [WHO Child Growth Standards (CDC)](https://www.cdc.gov/growthcharts/who-data-files.htm)
+
 ## Running the Application
 
 ### Local Development Server (Recommended)
@@ -58,18 +60,50 @@ Open `index.html` directly in a web browser (may have CORS issues with CSV loadi
 baby-weight-predictor/
 ├── index.html          # Main HTML structure and form
 ├── styles.css          # All styling and responsive design
-├── script.js           # Data arrays, calculation logic, and UI handlers
-└── WHO-*-Percentiles.csv  # Original CSV files (reference only, not loaded by app)
+├── js/                 # JavaScript modules (ES6)
+│   ├── main.js         # Application initialization
+│   ├── data.js         # CSV loading and parsing
+│   ├── calculations.js # WHO LMS formulas
+│   ├── conversions.js  # Unit conversion functions
+│   ├── charts.js       # Chart.js functions
+│   ├── ui.js          # Display functions
+│   └── forms.js       # Form handling and validation
+└── WHO-*-Percentiles.csv  # WHO growth data CSV files (loaded at runtime)
+```
+
+### Module Dependencies
+
+```
+main.js
+├── data.js (loads CSV files)
+├── charts.js
+│   ├── data.js (uses growth data)
+│   └── calculations.js (getPercentileDescription)
+└── forms.js
+    ├── calculations.js (calculateMeasurement, calculatePercentile)
+    ├── ui.js (showResult functions)
+    └── charts.js (showDefaultChart)
+
+ui.js
+├── conversions.js (formatting functions)
+├── calculations.js (getPercentileDescription)
+└── charts.js (createGrowthChart)
 ```
 
 ## Important Implementation Details
 
-1. **Data is embedded in JavaScript**: The WHO CSV files exist in the repo but are NOT loaded at runtime. All data is hard-coded in `script.js` arrays.
+1. **Data loading**: WHO CSV files are loaded at runtime using the Fetch API in `data.js`. The app requires a local server to avoid CORS issues.
 
-2. **Age must be whole months**: The lookup logic expects exact month values (0-24). No interpolation is performed for fractional months.
+2. **ES6 Modules**: The codebase uses ES6 module syntax (`import`/`export`) for better organization and maintainability.
 
-3. **Percentile indices**: The `percentileMap` translates user-facing percentile values (2, 5, 10, etc.) to column indices (4-12) in the data arrays.
+3. **Age must be whole months**: The lookup logic expects exact month values (0-24). No interpolation is performed for fractional months.
 
-4. **Client-side only**: No backend, API calls, or data fetching. All calculations happen in the browser.
+4. **LMS Method**: Uses WHO's Lambda-Mu-Sigma method for calculating growth measurements from percentiles and vice versa.
 
-5. **Unit display philosophy**: Always show both the selected unit and the converted unit for user convenience.
+5. **Client-side only**: No backend or API calls (except for loading CSV files). All calculations happen in the browser.
+
+6. **Bidirectional calculations**:
+   - Enter percentile → calculate measurement (forward LMS)
+   - Enter measurement → calculate percentile (inverse LMS)
+
+7. **Unit display philosophy**: Always show both the selected unit and the converted unit for user convenience.

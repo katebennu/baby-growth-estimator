@@ -37,7 +37,7 @@ A comprehensive web application that estimates baby growth measurements (weight,
 
 ## Data Source
 
-The application uses WHO Child Growth Standards data from the CSV files:
+The application uses [WHO Child Growth Standards data from the CDC](https://www.cdc.gov/growthcharts/who-data-files.htm), loaded from CSV files:
 - `WHO-Boys-Weight-for-age-Percentiles.csv`
 - `WHO-Girls-Weight-for-age Percentiles.csv`
 - `WHO-Boys-Length-for-age-Percentiles.csv`
@@ -79,11 +79,35 @@ Then open `http://localhost:8000` in your browser.
 baby-weight-predictor/
 ├── index.html          # Main HTML file
 ├── styles.css          # CSS styling
-├── script.js           # JavaScript logic
+├── js/                 # JavaScript modules (ES6)
+│   ├── main.js         # Application initialization
+│   ├── data.js         # CSV loading and parsing
+│   ├── calculations.js # WHO LMS formulas
+│   ├── conversions.js  # Unit conversion functions
+│   ├── charts.js       # Chart.js functions
+│   ├── ui.js          # Display functions
+│   └── forms.js       # Form handling and validation
 ├── README.md           # This file
+├── CLAUDE.md          # Developer documentation
 ├── WHO-Boys-Weight-for-age-Percentiles.csv
-└── WHO-Girls-Weight-for-age Percentiles.csv
+├── WHO-Girls-Weight-for-age-Percentiles.csv
+├── WHO-Boys-Length-for-age-Percentiles.csv
+├── WHO-Girls-Length-for-age-Percentiles.csv
+├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
+└── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
 ```
+
+### Module Architecture
+
+The application uses ES6 modules for better code organization:
+
+- **main.js**: Entry point, coordinates initialization
+- **data.js**: Loads and parses WHO CSV data files
+- **calculations.js**: Implements WHO LMS (Lambda-Mu-Sigma) method
+- **conversions.js**: Unit conversions (kg/lbs, cm/inches)
+- **charts.js**: Chart.js integration for growth curves
+- **ui.js**: DOM manipulation and result display
+- **forms.js**: Form validation and event handling
 
 ## Example Usage
 
