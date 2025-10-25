@@ -853,7 +853,7 @@ function showDefaultChart(tabName) {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Baby Growth Predictor loaded successfully');
+    console.log('Baby Growth Estimator loaded successfully');
 
     // Initialize tab button event listeners
     document.querySelectorAll('.tab-button').forEach(button => {
