@@ -11,10 +11,44 @@
     <div class="container">
         <header>
             <h1>Baby Growth Estimator</h1>
-            <p>Estimate your baby's growth based on WHO growth standards</p>
         </header>
-        
+
         <main>
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <p class="welcome-text">
+                    Use WHO growth standards to estimate your baby's future measurements and plan ahead for important purchases.
+                    Whether you're shopping for clothes, choosing a stroller, or planning for a car seat upgrade, knowing your baby's
+                    expected size helps you make informed decisions.
+                </p>
+
+                <details class="help-section">
+                    <summary>How to Use This Tool</summary>
+                    <div class="help-content">
+                        <ul>
+                            <li><strong>Choose a measurement type:</strong> Weight, Length, or Head Circumference</li>
+                            <li><strong>Enter baby's age:</strong> Any age from 0-24 months (whole months only)</li>
+                            <li><strong>Select gender:</strong> Growth patterns differ between boys and girls</li>
+                            <li><strong>Pick a percentile:</strong> Use 50th for average, or match your baby's current growth curve</li>
+                            <li><strong>Get estimates:</strong> See predicted measurements with helpful charts</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="help-section">
+                    <summary>Understanding Percentiles</summary>
+                    <div class="help-content">
+                        <p><strong>What do percentiles mean?</strong></p>
+                        <ul>
+                            <li><strong>50th percentile:</strong> Average size - half of babies are larger, half are smaller</li>
+                            <li><strong>75th percentile:</strong> Larger than average - bigger than 75% of babies</li>
+                            <li><strong>25th percentile:</strong> Smaller than average - smaller than 75% of babies</li>
+                        </ul>
+                        <p class="help-note">All percentiles are healthy! Babies grow at different rates, and consistency matters more than the specific percentile.</p>
+                    </div>
+                </details>
+            </div>
+
             <div class="tabs">
                 <button class="tab-button active" data-tab="weight">Weight</button>
                 <button class="tab-button" data-tab="length">Length</button>
@@ -26,32 +60,45 @@
                 <form id="weightForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="weight-age">Baby's Age (months):</label>
-                            <input type="number" id="weight-age" name="age" min="0" max="24" required>
+                            <label for="weight-age">
+                                Baby's Age (months)
+                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                            </label>
+                            <input type="number" id="weight-age" name="age" min="0" max="24" required
+                                   aria-describedby="weight-age-hint" placeholder="0-24">
+                            <span class="input-hint" id="weight-age-hint">Whole months only (0-24)</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Gender:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="weight-gender-boy" name="weight-gender" value="boy">
-                                <label for="weight-gender-boy" class="toggle-label">Boy</label>
+                            <label>
+                                Gender
+                                <span class="tooltip" aria-label="Boys and girls have different growth patterns according to WHO standards.">ⓘ</span>
+                            </label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select baby's gender">
                                 <input type="radio" id="weight-gender-girl" name="weight-gender" value="girl" checked>
                                 <label for="weight-gender-girl" class="toggle-label">Girl</label>
+                                <input type="radio" id="weight-gender-boy" name="weight-gender" value="boy">
+                                <label for="weight-gender-boy" class="toggle-label">Boy</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="weight-percentile">Percentile (1-99):</label>
-                            <input type="number" id="weight-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <label for="weight-percentile">
+                                Percentile (1-99)
+                                <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
+                            </label>
+                            <input type="number" id="weight-percentile" name="percentile" min="1" max="99" step="1"
+                                   placeholder="e.g., 50" required aria-describedby="weight-percentile-hint">
+                            <span class="input-hint" id="weight-percentile-hint">Try 50 for average size</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Weight Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="weight-kg" name="weight-unit" value="kg" checked>
-                                <label for="weight-kg" class="toggle-label">kg</label>
-                                <input type="radio" id="weight-lbs" name="weight-unit" value="lbs">
+                            <label>Weight Unit</label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select weight unit">
+                                <input type="radio" id="weight-lbs" name="weight-unit" value="lbs" checked>
                                 <label for="weight-lbs" class="toggle-label">lbs</label>
+                                <input type="radio" id="weight-kg" name="weight-unit" value="kg">
+                                <label for="weight-kg" class="toggle-label">kg</label>
                             </div>
                         </div>
                     </div>
@@ -75,6 +122,7 @@
 
                     <div class="chart-container">
                         <canvas id="weight-chart"></canvas>
+                        <p class="data-source">Data source: <a href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">WHO Child Growth Standards (CDC)</a></p>
                     </div>
 
                     <div class="measurement-info">
@@ -92,32 +140,45 @@
                 <form id="lengthForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="length-age">Baby's Age (months):</label>
-                            <input type="number" id="length-age" name="age" min="0" max="24" required>
+                            <label for="length-age">
+                                Baby's Age (months)
+                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                            </label>
+                            <input type="number" id="length-age" name="age" min="0" max="24" required
+                                   aria-describedby="length-age-hint" placeholder="0-24">
+                            <span class="input-hint" id="length-age-hint">Whole months only (0-24)</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Gender:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="length-gender-boy" name="length-gender" value="boy">
-                                <label for="length-gender-boy" class="toggle-label">Boy</label>
+                            <label>
+                                Gender
+                                <span class="tooltip" aria-label="Boys and girls have different growth patterns according to WHO standards.">ⓘ</span>
+                            </label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select baby's gender">
                                 <input type="radio" id="length-gender-girl" name="length-gender" value="girl" checked>
                                 <label for="length-gender-girl" class="toggle-label">Girl</label>
+                                <input type="radio" id="length-gender-boy" name="length-gender" value="boy">
+                                <label for="length-gender-boy" class="toggle-label">Boy</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="length-percentile">Percentile (1-99):</label>
-                            <input type="number" id="length-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <label for="length-percentile">
+                                Percentile (1-99)
+                                <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
+                            </label>
+                            <input type="number" id="length-percentile" name="percentile" min="1" max="99" step="1"
+                                   placeholder="e.g., 50" required aria-describedby="length-percentile-hint">
+                            <span class="input-hint" id="length-percentile-hint">Try 50 for average size</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Length Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="length-cm" name="length-unit" value="cm" checked>
-                                <label for="length-cm" class="toggle-label">cm</label>
-                                <input type="radio" id="length-inches" name="length-unit" value="inches">
+                            <label>Length Unit</label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select length unit">
+                                <input type="radio" id="length-inches" name="length-unit" value="inches" checked>
                                 <label for="length-inches" class="toggle-label">inches</label>
+                                <input type="radio" id="length-cm" name="length-unit" value="cm">
+                                <label for="length-cm" class="toggle-label">cm</label>
                             </div>
                         </div>
                     </div>
@@ -141,6 +202,7 @@
 
                     <div class="chart-container">
                         <canvas id="length-chart"></canvas>
+                        <p class="data-source">Data source: <a href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">WHO Child Growth Standards (CDC)</a></p>
                     </div>
 
                     <div class="measurement-info">
@@ -158,32 +220,45 @@
                 <form id="headForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="head-age">Baby's Age (months):</label>
-                            <input type="number" id="head-age" name="age" min="0" max="24" required>
+                            <label for="head-age">
+                                Baby's Age (months)
+                                <span class="tooltip" aria-label="Enter your baby's age in whole months from 0 to 24. For example, enter 6 for a 6-month-old baby.">ⓘ</span>
+                            </label>
+                            <input type="number" id="head-age" name="age" min="0" max="24" required
+                                   aria-describedby="head-age-hint" placeholder="0-24">
+                            <span class="input-hint" id="head-age-hint">Whole months only (0-24)</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Gender:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="head-gender-boy" name="head-gender" value="boy">
-                                <label for="head-gender-boy" class="toggle-label">Boy</label>
+                            <label>
+                                Gender
+                                <span class="tooltip" aria-label="Boys and girls have different growth patterns according to WHO standards.">ⓘ</span>
+                            </label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select baby's gender">
                                 <input type="radio" id="head-gender-girl" name="head-gender" value="girl" checked>
                                 <label for="head-gender-girl" class="toggle-label">Girl</label>
+                                <input type="radio" id="head-gender-boy" name="head-gender" value="boy">
+                                <label for="head-gender-boy" class="toggle-label">Boy</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="head-percentile">Percentile (1-99):</label>
-                            <input type="number" id="head-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <label for="head-percentile">
+                                Percentile (1-99)
+                                <span class="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
+                            </label>
+                            <input type="number" id="head-percentile" name="percentile" min="1" max="99" step="1"
+                                   placeholder="e.g., 50" required aria-describedby="head-percentile-hint">
+                            <span class="input-hint" id="head-percentile-hint">Try 50 for average size</span>
                         </div>
 
                         <div class="form-group">
-                            <label>Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="head-cm" name="head-unit" value="cm" checked>
-                                <label for="head-cm" class="toggle-label">cm</label>
-                                <input type="radio" id="head-inches" name="head-unit" value="inches">
+                            <label>Circumference Unit</label>
+                            <div class="unit-toggle" role="radiogroup" aria-label="Select head circumference unit">
+                                <input type="radio" id="head-inches" name="head-unit" value="inches" checked>
                                 <label for="head-inches" class="toggle-label">inches</label>
+                                <input type="radio" id="head-cm" name="head-unit" value="cm">
+                                <label for="head-cm" class="toggle-label">cm</label>
                             </div>
                         </div>
                     </div>
@@ -207,6 +282,7 @@
 
                     <div class="chart-container">
                         <canvas id="head-chart"></canvas>
+                        <p class="data-source">Data source: <a href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">WHO Child Growth Standards (CDC)</a></p>
                     </div>
 
                     <div class="measurement-info">
@@ -221,7 +297,6 @@
         </main>
         
         <footer>
-            <p>Data source: <a href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">WHO Child Growth Standards (CDC)</a></p>
             <p>
                 <a href="https://github.com/katebennu/baby-growth-estimator" target="_blank" rel="noopener noreferrer">
                     <svg class="github-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">

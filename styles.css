@@ -8,7 +8,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     min-height: 100vh;
 }
 
@@ -46,6 +46,103 @@ main {
     flex: 1;
 }
 
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #e8f5f3 0%, #f0fff4 100%);
+    border-radius: 12px;
+    border-left: 4px solid #11998e;
+}
+
+.welcome-section h2 {
+    font-size: 1.1rem;
+    color: #0d7c72;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.welcome-text {
+    color: #555;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+/* Help Sections (Collapsible) */
+.help-section {
+    margin-top: 10px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+}
+
+.help-section summary {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #11998e;
+    background: white;
+    transition: all 0.3s ease;
+    user-select: none;
+    list-style: none;
+}
+
+.help-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.help-section summary::before {
+    content: "▶ ";
+    display: inline-block;
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.help-section[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.help-section summary:hover {
+    background: rgba(17, 153, 142, 0.05);
+}
+
+.help-content {
+    padding: 12px;
+    background: #f8f9fa;
+    border-top: 1px solid #e1e5e9;
+}
+
+.help-content ul {
+    margin: 8px 0;
+    padding-left: 18px;
+}
+
+.help-content li {
+    margin: 6px 0;
+    color: #555;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.help-content p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 0.8rem;
+}
+
+.help-note {
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(17, 153, 142, 0.1);
+    border-radius: 6px;
+    color: #0d7c72;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
 /* Tab Styling */
 .tabs {
     display: flex;
@@ -71,15 +168,15 @@ main {
 }
 
 .tab-button:hover {
-    color: #667eea;
-    background: rgba(102, 126, 234, 0.05);
+    color: #11998e;
+    background: rgba(17, 153, 142, 0.05);
     transform: none;
     box-shadow: none;
 }
 
 .tab-button.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    color: #11998e;
+    border-bottom-color: #11998e;
     background: transparent;
 }
 
@@ -124,6 +221,81 @@ label {
     font-weight: 600;
     color: #555;
     font-size: 0.95rem;
+    position: relative;
+}
+
+/* Tooltip Styling */
+.tooltip {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    background: #11998e;
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 5px;
+    cursor: help;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tooltip:hover {
+    background: #0d7c72;
+    transform: scale(1.1);
+}
+
+.tooltip::after {
+    content: attr(aria-label);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: normal;
+    white-space: normal;
+    width: 200px;
+    text-align: left;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    line-height: 1.4;
+}
+
+.tooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #333;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* Input Hint Styling */
+.input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 3px;
+    font-weight: normal;
+    font-style: italic;
 }
 
 input[type="number"],
@@ -140,9 +312,9 @@ select {
 input[type="number"]:focus,
 select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #11998e;
     background: white;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
 }
 
 /* Unit Toggle Styling */
@@ -156,8 +328,8 @@ select:focus {
 }
 
 .unit-toggle:focus-within {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #11998e;
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
 }
 
 .unit-toggle input[type="radio"] {
@@ -178,15 +350,15 @@ select:focus {
 }
 
 .unit-toggle input[type="radio"]:checked + .toggle-label {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     color: white;
-    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 4px rgba(17, 153, 142, 0.3);
 }
 
 button {
     width: 100%;
     padding: 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -199,7 +371,7 @@ button {
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
 }
 
 button:active {
@@ -220,16 +392,16 @@ button:active {
 .result h3 {
     font-size: 1.2rem;
     margin-bottom: 12px;
-    color: #667eea;
+    color: #0d7c72;
     font-weight: 700;
 }
 
 .measurement-section {
     margin-bottom: 0;
     padding: 10px;
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(17, 153, 142, 0.05);
     border-radius: 8px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(17, 153, 142, 0.1);
 }
 
 .measurement-section h4 {
@@ -242,7 +414,7 @@ button:active {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 6px;
-    color: #667eea;
+    color: #11998e;
 }
 
 .unit {
@@ -284,6 +456,25 @@ button:active {
 
 .chart-container canvas {
     max-height: 300px;
+}
+
+.data-source {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.7rem;
+    color: #888;
+    text-align: center;
+}
+
+.data-source a {
+    color: #11998e;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.data-source a:hover {
+    color: #0d7c72;
+    text-decoration: underline;
 }
 
 .error {
@@ -361,6 +552,20 @@ footer a:hover {
     .weight-display, .length-display, .head-display {
         font-size: 1.8rem;
     }
+
+    .welcome-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .welcome-text {
+        font-size: 0.9rem;
+    }
+
+    /* Make tooltips work better on mobile */
+    .tooltip::after {
+        width: 180px;
+        font-size: 0.75rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -379,5 +584,28 @@ footer a:hover {
 
     .weight-display, .length-display, .head-display {
         font-size: 1.6rem;
+    }
+
+    .welcome-section {
+        padding: 15px;
+    }
+
+    .welcome-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .welcome-text {
+        font-size: 0.85rem;
+    }
+
+    .help-content li {
+        font-size: 0.85rem;
+    }
+
+    /* Simplified tooltips on very small screens */
+    .tooltip::after {
+        width: 150px;
+        font-size: 0.7rem;
+        padding: 6px 10px;
     }
 }
