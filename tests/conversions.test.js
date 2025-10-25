@@ -8,7 +8,7 @@ import {
     formatWeight,
     formatLength,
     formatHeadCircumference
-} from '../js/conversions.js';
+} from '../src/conversions.js';
 
 describe('kgToLbs', () => {
     it('should convert 1 kg to ~2.20 lbs', () => {

@@ -7,7 +7,7 @@ import {
     boysHeadData,
     girlsHeadData,
     loadAllData
-} from '../js/data.js';
+} from '../src/data.js';
 
 describe('Data arrays', () => {
     it('should export boysWeightData array', () => {

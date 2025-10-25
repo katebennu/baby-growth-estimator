@@ -5,7 +5,7 @@ import {
     calculateMeasurement,
     calculatePercentile,
     getPercentileDescription
-} from '../js/calculations.js';
+} from '../src/calculations.js';
 import {
     boysWeightData,
     girlsWeightData,
@@ -13,7 +13,7 @@ import {
     girlsLengthData,
     boysHeadData,
     girlsHeadData
-} from '../js/data.js';
+} from '../src/data.js';
 
 // Mock data for testing
 beforeAll(() => {

@@ -10,22 +10,22 @@ Baby Growth Predictor is a client-side web application that estimates baby growt
 
 ## Running the Application
 
-### Local Development Server (Recommended)
+This is a React application built with Vite.
+
+### Development Server
 ```bash
-# Python 3
-python3 -m http.server 8000
-
-# Node.js
-npx http-server
-
-# PHP
-php -S localhost:8000
+npm run dev
 ```
 
-Then open `http://localhost:8000` in your browser.
+Then open the URL shown in the terminal (typically `http://localhost:5173`).
 
-### Direct File Access
-Open `index.html` directly in a web browser (may have CORS issues with CSV loading in some browsers).
+### Production Build
+```bash
+npm run build
+npm run preview
+```
+
+The build command creates an optimized production build in the `dist/` folder.
 
 ## Development
 
@@ -55,45 +55,59 @@ The test suite uses Vitest and covers core calculation and data handling logic. 
 
 ## Architecture
 
+This is a React single-page application built with Vite.
+
+### React Component Structure
+- **App.jsx**: Root component managing tab state and shared inputs (age, gender, percentile)
+- **Header.jsx**: Simple header component
+- **Footer.jsx**: Footer with GitHub link
+- **WelcomeSection.jsx**: Welcome text and collapsible help sections
+- **TabButtons.jsx**: Tab switcher for Weight/Length/Head Circumference
+- **MeasurementTab.jsx**: Container for each measurement type (weight, length, head)
+- **MeasurementForm.jsx**: Reusable form component with age slider, gender selection, and percentile slider
+- **MeasurementResult.jsx**: Displays calculation results, charts, practical tips, and age comparison table
+
 ### Data Layer
 - **WHO Growth Data**: Loaded from CSV files at runtime using the Fetch API, containing WHO LMS (Lambda-Mu-Sigma) method data
   - Weight data: `boysWeightData`, `girlsWeightData` (loaded from WHO-*-Weight-for-age-Percentiles.csv)
   - Length data: `boysLengthData`, `girlsLengthData` (loaded from WHO-*-Length-for-age-Percentiles.csv)
   - Head circumference data: `boysHeadData`, `girlsHeadData` (loaded from WHO-*-Head-Circumference-for-age-Percentiles.csv)
 - Each data array contains rows of [age, L, M, S, P2.3, P5, P10, P25, P50, P75, P90, P95, P97.7] values
-- CSV files are parsed into numeric arrays by `data.js` module
+- CSV files are parsed into numeric arrays by `src/data.js` module
 
 ### Calculation Engine
 - `calculateMeasurement(age, gender, percentile, measurementType)`: Core function that looks up the appropriate data array, finds the age row, and returns the percentile value
-- `calculateAllMeasurements(age, gender, percentile)`: Wrapper that calculates weight, length, and head circumference in one call
+- `generateAgeComparison(currentAge, gender, percentile, measurementType)`: Generates future growth estimates at 3-month intervals
 - Direct array lookup approach (not interpolation) - only whole month ages are supported
 
 ### Unit Conversion
 - Weight: `kgToLbs()`, `lbsToKg()`, `lbsToLbsOz()` (converts decimal pounds to pounds + ounces format)
 - Length: `cmToInches()`, `inchesToCm()`
 - Head: Uses same cm/inches conversion as length
-- Display formatters: `formatWeight()`, `formatLength()`, `formatHead()`
-
-### UI Layer
-- Form-based input (age, gender, percentile, unit preference)
-- Results displayed with both primary unit and converted unit
-- Error handling with user-friendly messages
-- Responsive design with CSS in `styles.css`
+- Display formatters: `formatWeight()`, `formatLength()`, `formatHeadCircumference()`
 
 ## File Structure
 
 ```
 baby-weight-predictor/
-├── index.html          # Main HTML structure and form
+├── index.html          # Vite entry point (mounts React app)
 ├── styles.css          # All styling and responsive design
-├── js/                 # JavaScript modules (ES6)
-│   ├── main.js         # Application initialization
+├── vite.config.js      # Vite configuration with React plugin and test settings
+├── src/                # React application source
+│   ├── main.jsx        # React entry point (renders App)
+│   ├── App.jsx         # Root React component
+│   ├── components/     # React components
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── WelcomeSection.jsx
+│   │   ├── TabButtons.jsx
+│   │   ├── MeasurementTab.jsx
+│   │   ├── MeasurementForm.jsx
+│   │   └── MeasurementResult.jsx
 │   ├── data.js         # CSV loading and parsing
 │   ├── calculations.js # WHO LMS formulas
 │   ├── conversions.js  # Unit conversion functions
-│   ├── charts.js       # Chart.js functions
-│   ├── ui.js          # Display functions
-│   └── forms.js       # Form handling and validation
+│   └── charts.js       # Chart.js functions
 ├── tests/             # Test suite (Vitest)
 │   ├── calculations.test.js
 │   ├── conversions.test.js
@@ -111,39 +125,36 @@ baby-weight-predictor/
 └── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
 ```
 
-### Module Dependencies
+### Component Dependencies
 
 ```
-main.js
-├── data.js (loads CSV files)
-├── charts.js
-│   ├── data.js (uses growth data)
-│   └── calculations.js (getPercentileDescription)
-└── forms.js
-    ├── calculations.js (calculateMeasurement, calculatePercentile)
-    ├── ui.js (showResult functions)
-    └── charts.js (showDefaultChart)
-
-ui.js
-├── conversions.js (formatting functions)
-├── calculations.js (getPercentileDescription)
-└── charts.js (createGrowthChart)
+App.jsx (root component)
+├── Header.jsx
+├── WelcomeSection.jsx
+├── TabButtons.jsx
+└── MeasurementTab.jsx (3 instances: weight, length, head)
+    ├── MeasurementForm.jsx
+    │   └── calculations.js (calculateMeasurement)
+    └── MeasurementResult.jsx
+        ├── conversions.js (formatters, unit conversions)
+        ├── calculations.js (getPercentileDescription, generateAgeComparison)
+        └── charts.js (createGrowthChart)
 ```
 
 ## Important Implementation Details
 
-1. **Data loading**: WHO CSV files are loaded at runtime using the Fetch API in `data.js`. The app requires a local server to avoid CORS issues.
+1. **React + Vite**: The app uses React 18 with Vite for fast development and optimized builds. Vite handles module bundling, hot module replacement, and asset optimization.
 
-2. **ES6 Modules**: The codebase uses ES6 module syntax (`import`/`export`) for better organization and maintainability.
+2. **State Management**: Uses React's built-in `useState` hook. Shared inputs (age, gender, percentile) are lifted to the App component and synced across all three tabs.
 
-3. **Age must be whole months**: The lookup logic expects exact month values (0-24). No interpolation is performed for fractional months.
+3. **Data loading**: WHO CSV files are loaded at runtime using the Fetch API in `src/data.js`. Vite's dev server handles serving these files during development.
 
-4. **LMS Method**: Uses WHO's Lambda-Mu-Sigma method for calculating growth measurements from percentiles and vice versa.
+4. **Age must be whole months**: The lookup logic expects exact month values (0-24). No interpolation is performed for fractional months.
 
-5. **Client-side only**: No backend or API calls (except for loading CSV files). All calculations happen in the browser.
+5. **LMS Method**: Uses WHO's Lambda-Mu-Sigma method for calculating growth measurements from percentiles.
 
-6. **Bidirectional calculations**:
-   - Enter percentile → calculate measurement (forward LMS)
-   - Enter measurement → calculate percentile (inverse LMS)
+6. **Client-side only**: No backend or API calls (except for loading CSV files). All calculations happen in the browser.
 
-7. **Unit display philosophy**: Always show both the selected unit and the converted unit for user convenience.
+7. **Component Reusability**: The refactor eliminated HTML repetition by creating reusable components. The same MeasurementForm and MeasurementResult components are used for all three measurement types (weight, length, head).
+
+8. **Unit display philosophy**: Always show both the selected unit (lbs/inches) and the converted unit (kg/cm) for user convenience.
