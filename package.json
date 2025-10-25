@@ -1,9 +1,9 @@
 {
-  "name": "baby-growth-estimator",
+  "name": "baby-size-estimator",
   "version": "1.0.0",
   "description": "Baby growth estimator based on WHO growth standards",
   "type": "module",
-  "homepage": "https://katebennu.github.io/baby-growth-estimator",
+  "homepage": "https://katebennu.github.io/baby-size-estimator",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
