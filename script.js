@@ -195,6 +195,27 @@ function percentileToZScore(percentile) {
     return z;
 }
 
+// Function to convert z-score to percentile using normal CDF approximation
+function zScoreToPercentile(z) {
+    // Using the error function approximation
+    const t = 1 / (1 + 0.2316419 * Math.abs(z));
+    const d = 0.3989423 * Math.exp(-z * z / 2);
+    const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+
+    let p;
+    if (z >= 0) {
+        p = 1 - prob;
+    } else {
+        p = prob;
+    }
+
+    // Convert to percentile (0-100)
+    const percentile = p * 100;
+
+    // Clamp to 1-99 range
+    return Math.max(1, Math.min(99, Math.round(percentile * 10) / 10));
+}
+
 // Function to calculate measurement using WHO LMS method
 function calculateMeasurement(age, gender, percentile, measurementType) {
     let data;
@@ -238,6 +259,51 @@ function calculateMeasurement(age, gender, percentile, measurementType) {
     }
 
     return Math.round(measurementValue * 100) / 100; // Round to 2 decimal places
+}
+
+// Function to calculate percentile from measurement (inverse LMS)
+function calculatePercentile(age, gender, measurement, measurementType) {
+    let data;
+
+    switch (measurementType) {
+        case 'weight':
+            data = gender === 'boy' ? boysWeightData : girlsWeightData;
+            break;
+        case 'length':
+            data = gender === 'boy' ? boysLengthData : girlsLengthData;
+            break;
+        case 'head':
+            data = gender === 'boy' ? boysHeadData : girlsHeadData;
+            break;
+        default:
+            throw new Error('Invalid measurement type');
+    }
+
+    // Find the row for the given age
+    const ageRow = data.find(row => row[0] === age);
+    if (!ageRow) {
+        throw new Error('Age not found in data');
+    }
+
+    // Extract LMS parameters
+    const L = ageRow[1];  // Box-Cox power (skewness)
+    const M = ageRow[2];  // Median
+    const S = ageRow[3];  // Coefficient of variation
+
+    // Calculate z-score from measurement (inverse LMS formula)
+    let z;
+    if (Math.abs(L) < 0.01) {
+        // When L is close to 0, use logarithmic formula
+        z = Math.log(measurement / M) / S;
+    } else {
+        // Standard inverse LMS formula
+        z = (Math.pow(measurement / M, L) - 1) / (L * S);
+    }
+
+    // Convert z-score to percentile
+    const percentile = zScoreToPercentile(z);
+
+    return percentile;
 }
 
 // Function to calculate all measurements
@@ -489,7 +555,6 @@ function createGrowthChart(canvasId, measurementType, gender, selectedAge = null
 function showWeightResult(weight, age, gender, percentile) {
     const resultDiv = document.getElementById('weight-result');
     const errorDiv = document.getElementById('weight-error');
-    const selectedUnit = getSelectedUnit('weight');
 
     errorDiv.classList.add('hidden');
 
@@ -509,25 +574,54 @@ function showWeightResult(weight, age, gender, percentile) {
 
     const weightLbs = kgToLbs(weight);
 
-    if (selectedUnit === 'kg') {
-        weightValue.textContent = weight;
-        weightUnit.textContent = 'kg';
-        convertedWeight.textContent = formatWeight(weightLbs, 'lbs');
-        convertedUnit.textContent = '';
-        convertedWeight.parentElement.classList.add('lbs-oz');
-        weightValue.parentElement.classList.remove('lbs-oz');
-    } else {
-        weightValue.textContent = formatWeight(weightLbs, 'lbs');
-        weightUnit.textContent = '';
-        convertedWeight.textContent = weight;
-        convertedUnit.textContent = 'kg';
-        weightValue.parentElement.classList.add('lbs-oz');
-        convertedWeight.parentElement.classList.remove('lbs-oz');
-    }
+    weightValue.textContent = weight;
+    weightUnit.textContent = 'kg';
+    convertedWeight.textContent = formatWeight(weightLbs, 'lbs');
+    convertedUnit.textContent = '';
+    convertedWeight.parentElement.classList.add('lbs-oz');
+    weightValue.parentElement.classList.remove('lbs-oz');
 
     const genderText = gender === 'boy' ? 'boy' : 'girl';
     const percentileDesc = getPercentileDescription(percentile);
     document.getElementById('weight-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    // Create chart
+    createGrowthChart('weight-chart', 'weight', gender, age, percentile, weight);
+
+    resultDiv.classList.remove('hidden');
+}
+
+// Function to show weight percentile result
+function showWeightPercentileResult(weight, percentile, age, gender) {
+    const resultDiv = document.getElementById('weight-result');
+    const errorDiv = document.getElementById('weight-error');
+
+    errorDiv.classList.add('hidden');
+
+    // Update title
+    resultDiv.querySelector('h3').textContent = 'Percentile Result';
+
+    // Show measurement section and info
+    const measurementSection = resultDiv.querySelector('.measurement-section');
+    const measurementInfo = resultDiv.querySelector('.measurement-info');
+    measurementSection.style.display = 'block';
+    measurementInfo.style.display = 'block';
+
+    const weightValue = document.getElementById('weightValue');
+    const weightUnit = document.getElementById('weightUnit');
+    const convertedWeight = document.getElementById('convertedWeight');
+    const convertedUnit = document.getElementById('convertedUnit');
+
+    // Display the percentile prominently
+    weightValue.textContent = percentile.toFixed(1);
+    weightUnit.textContent = getPercentileDescription(percentile).replace(`${Math.round(percentile)}`, '').trim();
+    convertedWeight.textContent = `${weight} kg`;
+    convertedUnit.textContent = '';
+    weightValue.parentElement.classList.remove('lbs-oz');
+    convertedWeight.parentElement.classList.remove('lbs-oz');
+
+    const genderText = gender === 'boy' ? 'boy' : 'girl';
+    document.getElementById('weight-info').textContent = `A ${age}-month-old ${genderText} weighing ${weight} kg is at the ${getPercentileDescription(percentile)}`;
 
     // Create chart
     createGrowthChart('weight-chart', 'weight', gender, age, percentile, weight);
@@ -579,6 +673,42 @@ function showLengthResult(length, age, gender, percentile) {
     resultDiv.classList.remove('hidden');
 }
 
+// Function to show length percentile result
+function showLengthPercentileResult(length, percentile, age, gender) {
+    const resultDiv = document.getElementById('length-result');
+    const errorDiv = document.getElementById('length-error');
+
+    errorDiv.classList.add('hidden');
+
+    // Update title
+    resultDiv.querySelector('h3').textContent = 'Percentile Result';
+
+    // Show measurement section and info
+    const measurementSection = resultDiv.querySelector('.measurement-section');
+    const measurementInfo = resultDiv.querySelector('.measurement-info');
+    measurementSection.style.display = 'block';
+    measurementInfo.style.display = 'block';
+
+    const lengthValue = document.getElementById('lengthValue');
+    const lengthUnit = document.getElementById('lengthUnit');
+    const convertedLength = document.getElementById('convertedLength');
+    const convertedLengthUnit = document.getElementById('convertedLengthUnit');
+
+    // Display the percentile prominently
+    lengthValue.textContent = percentile.toFixed(1);
+    lengthUnit.textContent = getPercentileDescription(percentile).replace(`${Math.round(percentile)}`, '').trim();
+    convertedLength.textContent = `${length} cm`;
+    convertedLengthUnit.textContent = '';
+
+    const genderText = gender === 'boy' ? 'boy' : 'girl';
+    document.getElementById('length-info').textContent = `A ${age}-month-old ${genderText} with length ${length} cm is at the ${getPercentileDescription(percentile)}`;
+
+    // Create chart
+    createGrowthChart('length-chart', 'length', gender, age, percentile, length);
+
+    resultDiv.classList.remove('hidden');
+}
+
 // Function to show head circumference result
 function showHeadResult(head, age, gender, percentile) {
     const resultDiv = document.getElementById('head-result');
@@ -623,6 +753,42 @@ function showHeadResult(head, age, gender, percentile) {
     resultDiv.classList.remove('hidden');
 }
 
+// Function to show head circumference percentile result
+function showHeadPercentileResult(head, percentile, age, gender) {
+    const resultDiv = document.getElementById('head-result');
+    const errorDiv = document.getElementById('head-error');
+
+    errorDiv.classList.add('hidden');
+
+    // Update title
+    resultDiv.querySelector('h3').textContent = 'Percentile Result';
+
+    // Show measurement section and info
+    const measurementSection = resultDiv.querySelector('.measurement-section');
+    const measurementInfo = resultDiv.querySelector('.measurement-info');
+    measurementSection.style.display = 'block';
+    measurementInfo.style.display = 'block';
+
+    const headValue = document.getElementById('headValue');
+    const headUnit = document.getElementById('headUnit');
+    const convertedHead = document.getElementById('convertedHead');
+    const convertedHeadUnit = document.getElementById('convertedHeadUnit');
+
+    // Display the percentile prominently
+    headValue.textContent = percentile.toFixed(1);
+    headUnit.textContent = getPercentileDescription(percentile).replace(`${Math.round(percentile)}`, '').trim();
+    convertedHead.textContent = `${head} cm`;
+    convertedHeadUnit.textContent = '';
+
+    const genderText = gender === 'boy' ? 'boy' : 'girl';
+    document.getElementById('head-info').textContent = `A ${age}-month-old ${genderText} with head circumference ${head} cm is at the ${getPercentileDescription(percentile)}`;
+
+    // Create chart
+    createGrowthChart('head-chart', 'head', gender, age, percentile, head);
+
+    resultDiv.classList.remove('hidden');
+}
+
 // Function to show error for specific tab
 function showError(tabName, message) {
     const resultDiv = document.getElementById(`${tabName}-result`);
@@ -635,7 +801,7 @@ function showError(tabName, message) {
 }
 
 // Function to validate form
-function validateForm(age, gender, percentile) {
+function validateForm(age, gender, percentile, measurement) {
     if (!age || age < 0 || age > 24) {
         return 'Please enter a valid age between 0 and 24 months';
     }
@@ -644,8 +810,20 @@ function validateForm(age, gender, percentile) {
         return 'Please select a gender';
     }
 
-    if (!percentile || percentile < 1 || percentile > 99) {
+    // Need either percentile or measurement, but not both
+    const hasPercentile = percentile && percentile !== '';
+    const hasMeasurement = measurement && measurement !== '';
+
+    if (!hasPercentile && !hasMeasurement) {
+        return 'Please enter either a percentile or a measurement';
+    }
+
+    if (hasPercentile && (percentile < 1 || percentile > 99)) {
         return 'Please enter a valid percentile between 1 and 99';
+    }
+
+    if (hasMeasurement && measurement <= 0) {
+        return 'Please enter a valid positive measurement';
     }
 
     return null;
@@ -731,18 +909,29 @@ document.getElementById('weightForm').addEventListener('submit', function(e) {
     const age = parseInt(document.getElementById('weight-age').value);
     const gender = document.getElementById('weight-gender').value;
     const percentile = document.getElementById('weight-percentile').value;
+    const measurement = document.getElementById('weight-measurement').value;
 
-    const validationError = validateForm(age, gender, percentile);
+    const validationError = validateForm(age, gender, percentile, measurement);
     if (validationError) {
         showError('weight', validationError);
         return;
     }
 
     try {
-        const weight = calculateMeasurement(age, gender, percentile, 'weight');
-        showWeightResult(weight, age, gender, percentile);
+        const hasPercentile = percentile && percentile !== '';
+        const hasMeasurement = measurement && measurement !== '';
+
+        if (hasMeasurement && !hasPercentile) {
+            // Calculate percentile from measurement
+            const calculatedPercentile = calculatePercentile(age, gender, parseFloat(measurement), 'weight');
+            showWeightPercentileResult(parseFloat(measurement), calculatedPercentile, age, gender);
+        } else {
+            // Calculate measurement from percentile
+            const weight = calculateMeasurement(age, gender, parseFloat(percentile), 'weight');
+            showWeightResult(weight, age, gender, parseFloat(percentile));
+        }
     } catch (error) {
-        showError('weight', 'Error calculating weight: ' + error.message);
+        showError('weight', 'Error calculating: ' + error.message);
     }
 });
 
@@ -753,18 +942,29 @@ document.getElementById('lengthForm').addEventListener('submit', function(e) {
     const age = parseInt(document.getElementById('length-age').value);
     const gender = document.getElementById('length-gender').value;
     const percentile = document.getElementById('length-percentile').value;
+    const measurement = document.getElementById('length-measurement').value;
 
-    const validationError = validateForm(age, gender, percentile);
+    const validationError = validateForm(age, gender, percentile, measurement);
     if (validationError) {
         showError('length', validationError);
         return;
     }
 
     try {
-        const length = calculateMeasurement(age, gender, percentile, 'length');
-        showLengthResult(length, age, gender, percentile);
+        const hasPercentile = percentile && percentile !== '';
+        const hasMeasurement = measurement && measurement !== '';
+
+        if (hasMeasurement && !hasPercentile) {
+            // Calculate percentile from measurement
+            const calculatedPercentile = calculatePercentile(age, gender, parseFloat(measurement), 'length');
+            showLengthPercentileResult(parseFloat(measurement), calculatedPercentile, age, gender);
+        } else {
+            // Calculate measurement from percentile
+            const length = calculateMeasurement(age, gender, parseFloat(percentile), 'length');
+            showLengthResult(length, age, gender, parseFloat(percentile));
+        }
     } catch (error) {
-        showError('length', 'Error calculating length: ' + error.message);
+        showError('length', 'Error calculating: ' + error.message);
     }
 });
 
@@ -775,18 +975,29 @@ document.getElementById('headForm').addEventListener('submit', function(e) {
     const age = parseInt(document.getElementById('head-age').value);
     const gender = document.getElementById('head-gender').value;
     const percentile = document.getElementById('head-percentile').value;
+    const measurement = document.getElementById('head-measurement').value;
 
-    const validationError = validateForm(age, gender, percentile);
+    const validationError = validateForm(age, gender, percentile, measurement);
     if (validationError) {
         showError('head', validationError);
         return;
     }
 
     try {
-        const head = calculateMeasurement(age, gender, percentile, 'head');
-        showHeadResult(head, age, gender, percentile);
+        const hasPercentile = percentile && percentile !== '';
+        const hasMeasurement = measurement && measurement !== '';
+
+        if (hasMeasurement && !hasPercentile) {
+            // Calculate percentile from measurement
+            const calculatedPercentile = calculatePercentile(age, gender, parseFloat(measurement), 'head');
+            showHeadPercentileResult(parseFloat(measurement), calculatedPercentile, age, gender);
+        } else {
+            // Calculate measurement from percentile
+            const head = calculateMeasurement(age, gender, parseFloat(percentile), 'head');
+            showHeadResult(head, age, gender, parseFloat(percentile));
+        }
     } catch (error) {
-        showError('head', 'Error calculating head circumference: ' + error.message);
+        showError('head', 'Error calculating: ' + error.message);
     }
 });
 
@@ -876,6 +1087,27 @@ function showDefaultChart(tabName) {
     }
 }
 
+// Function to update button text based on inputs
+function updateButtonText(tabName) {
+    const button = document.getElementById(`${tabName}-button`);
+    const percentileInput = document.getElementById(`${tabName}-percentile`);
+    const measurementInput = document.getElementById(`${tabName}-measurement`);
+
+    const hasPercentile = percentileInput.value && percentileInput.value.trim() !== '';
+    const hasMeasurement = measurementInput.value && measurementInput.value.trim() !== '';
+
+    if (hasMeasurement && !hasPercentile) {
+        button.textContent = 'Calculate Percentile';
+    } else {
+        const tabLabels = {
+            'weight': 'Weight',
+            'length': 'Length',
+            'head': 'Head Circumference'
+        };
+        button.textContent = `Calculate ${tabLabels[tabName]}`;
+    }
+}
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Baby Growth Estimator loaded successfully');
@@ -896,6 +1128,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize input synchronization after DOM is loaded
     syncInputs();
+
+    // Add event listeners to update button text
+    ['weight', 'length', 'head'].forEach(tabName => {
+        const percentileInput = document.getElementById(`${tabName}-percentile`);
+        const measurementInput = document.getElementById(`${tabName}-measurement`);
+
+        percentileInput.addEventListener('input', () => updateButtonText(tabName));
+        measurementInput.addEventListener('input', () => updateButtonText(tabName));
+    });
 
     // Show default chart on page load
     showDefaultChart('weight');

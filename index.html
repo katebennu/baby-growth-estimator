@@ -41,21 +41,16 @@
 
                         <div class="form-group">
                             <label for="weight-percentile">Percentile (1-99):</label>
-                            <input type="number" id="weight-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <input type="number" id="weight-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50">
                         </div>
 
                         <div class="form-group">
-                            <label>Weight Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="weight-kg" name="weight-unit" value="kg" checked>
-                                <label for="weight-kg" class="toggle-label">kg</label>
-                                <input type="radio" id="weight-lbs" name="weight-unit" value="lbs">
-                                <label for="weight-lbs" class="toggle-label">lbs</label>
-                            </div>
+                            <label for="weight-measurement">Or Actual Weight:</label>
+                            <input type="number" id="weight-measurement" name="measurement" min="0" step="0.01" placeholder="e.g., 9.5 kg">
                         </div>
                     </div>
 
-                    <button type="submit">Calculate Weight</button>
+                    <button type="submit" id="weight-button">Calculate Weight</button>
                 </form>
 
                 <div id="weight-result" class="result hidden">
@@ -106,21 +101,16 @@
 
                         <div class="form-group">
                             <label for="length-percentile">Percentile (1-99):</label>
-                            <input type="number" id="length-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <input type="number" id="length-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50">
                         </div>
 
                         <div class="form-group">
-                            <label>Length Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="length-cm" name="length-unit" value="cm" checked>
-                                <label for="length-cm" class="toggle-label">cm</label>
-                                <input type="radio" id="length-inches" name="length-unit" value="inches">
-                                <label for="length-inches" class="toggle-label">inches</label>
-                            </div>
+                            <label for="length-measurement">Or Actual Length:</label>
+                            <input type="number" id="length-measurement" name="measurement" min="0" step="0.1" placeholder="e.g., 75 cm">
                         </div>
                     </div>
 
-                    <button type="submit">Calculate Length</button>
+                    <button type="submit" id="length-button">Calculate Length</button>
                 </form>
 
                 <div id="length-result" class="result hidden">
@@ -171,21 +161,16 @@
 
                         <div class="form-group">
                             <label for="head-percentile">Percentile (1-99):</label>
-                            <input type="number" id="head-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50" required>
+                            <input type="number" id="head-percentile" name="percentile" min="1" max="99" step="1" placeholder="e.g., 50">
                         </div>
 
                         <div class="form-group">
-                            <label>Unit:</label>
-                            <div class="unit-toggle">
-                                <input type="radio" id="head-cm" name="head-unit" value="cm" checked>
-                                <label for="head-cm" class="toggle-label">cm</label>
-                                <input type="radio" id="head-inches" name="head-unit" value="inches">
-                                <label for="head-inches" class="toggle-label">inches</label>
-                            </div>
+                            <label for="head-measurement">Or Actual Head Circ.:</label>
+                            <input type="number" id="head-measurement" name="measurement" min="0" step="0.1" placeholder="e.g., 45 cm">
                         </div>
                     </div>
 
-                    <button type="submit">Calculate Head Circumference</button>
+                    <button type="submit" id="head-button">Calculate Head Circumference</button>
                 </form>
 
                 <div id="head-result" class="result hidden">
