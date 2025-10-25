@@ -161,3 +161,28 @@ export function getPercentileDescription(percentile) {
 
     return `${p}${suffix} percentile`;
 }
+
+// Function to generate age comparison data
+export function generateAgeComparison(currentAge, gender, percentile, measurementType) {
+    const comparisons = [];
+
+    // Generate comparisons at 3-month intervals starting from next 3-month mark
+    // Find the next multiple of 3 after current age
+    let startAge = Math.ceil((currentAge + 1) / 3) * 3;
+
+    // Generate up to 5 future age points at 3-month intervals
+    for (let i = 0; i < 5 && startAge <= 24; i++) {
+        const age = startAge + (i * 3);
+        if (age > 24) break;
+
+        try {
+            const measurement = calculateMeasurement(age, gender, percentile, measurementType);
+            comparisons.push({ age, measurement });
+        } catch (error) {
+            // Skip ages that don't have data
+            continue;
+        }
+    }
+
+    return comparisons;
+}

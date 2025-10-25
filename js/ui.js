@@ -1,7 +1,7 @@
 // UI module - Display functions
 
 import { kgToLbs, cmToInches, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from './conversions.js';
-import { getPercentileDescription } from './calculations.js';
+import { getPercentileDescription, generateAgeComparison } from './calculations.js';
 import { createGrowthChart } from './charts.js';
 
 // Helper function to get practical context for weight
@@ -49,6 +49,48 @@ function getHeadContext(headCm) {
     // Removed specific recommendations to avoid inaccuracy
 
     return contexts;
+}
+
+// Helper function to create age comparison table
+function createAgeComparisonTable(currentAge, gender, percentile, measurementType) {
+    const comparisons = generateAgeComparison(currentAge, gender, percentile, measurementType);
+
+    if (comparisons.length === 0) {
+        return '';
+    }
+
+    const selectedUnit = getSelectedUnit(measurementType);
+    let tableHTML = '<div class="age-comparison"><h4>Future Growth Estimates</h4><table><thead><tr><th>Age</th><th>Estimated ' +
+        (measurementType === 'weight' ? 'Weight' : measurementType === 'length' ? 'Length' : 'Head Circumference') +
+        '</th></tr></thead><tbody>';
+
+    comparisons.forEach(({ age, measurement }) => {
+        let displayValue;
+        if (measurementType === 'weight') {
+            if (selectedUnit === 'lbs') {
+                displayValue = formatWeight(kgToLbs(measurement), 'lbs');
+            } else {
+                displayValue = measurement + ' kg';
+            }
+        } else if (measurementType === 'length') {
+            if (selectedUnit === 'inches') {
+                displayValue = formatLength(measurement, 'inches');
+            } else {
+                displayValue = measurement + ' cm';
+            }
+        } else if (measurementType === 'head') {
+            if (selectedUnit === 'inches') {
+                displayValue = formatHeadCircumference(measurement, 'inches');
+            } else {
+                displayValue = measurement + ' cm';
+            }
+        }
+
+        tableHTML += `<tr><td>${age} months</td><td>${displayValue}</td></tr>`;
+    });
+
+    tableHTML += '</tbody></table></div>';
+    return tableHTML;
 }
 
 // Function to show weight result
@@ -104,6 +146,10 @@ export function showWeightResult(weight, age, gender, percentile) {
         });
         infoHTML += '</ul></div>';
     }
+
+    // Add age comparison table
+    infoHTML += createAgeComparisonTable(age, gender, percentile, 'weight');
+
     document.getElementById('weight-info').innerHTML = infoHTML;
 
     // Create chart
@@ -197,6 +243,10 @@ export function showLengthResult(length, age, gender, percentile) {
         });
         infoHTML += '</ul></div>';
     }
+
+    // Add age comparison table
+    infoHTML += createAgeComparisonTable(age, gender, percentile, 'length');
+
     document.getElementById('length-info').innerHTML = infoHTML;
 
     // Create chart
@@ -288,6 +338,10 @@ export function showHeadResult(head, age, gender, percentile) {
         });
         infoHTML += '</ul></div>';
     }
+
+    // Add age comparison table
+    infoHTML += createAgeComparisonTable(age, gender, percentile, 'head');
+
     document.getElementById('head-info').innerHTML = infoHTML;
 
     // Create chart

@@ -562,11 +562,43 @@ button:active {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
 .result h3 {
     font-size: 1.2rem;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     color: #0d7c72;
     font-weight: 700;
+}
+
+.print-btn {
+    padding: 6px 12px;
+    background: white;
+    color: #11998e;
+    border: 1.5px solid #11998e;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0;
+    width: auto;
+}
+
+.print-btn:hover {
+    background: #11998e;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(17, 153, 142, 0.2);
+}
+
+.print-btn:active {
+    transform: translateY(0);
 }
 
 .measurement-section {
@@ -649,6 +681,54 @@ button:active {
     color: #555;
     margin: 4px 0;
     line-height: 1.4;
+}
+
+/* Age Comparison Table */
+.age-comparison {
+    margin-top: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e1e5e9;
+    overflow: hidden;
+}
+
+.age-comparison h4 {
+    font-size: 0.9rem;
+    color: #0d7c72;
+    padding: 10px 15px;
+    margin: 0;
+    background: linear-gradient(135deg, #e8f5f3 0%, #f0fff4 100%);
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.age-comparison table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.age-comparison th {
+    background: #f8f9fa;
+    color: #0d7c72;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 15px;
+    text-align: left;
+    border-bottom: 2px solid #11998e;
+}
+
+.age-comparison td {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    color: #555;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.age-comparison tr:last-child td {
+    border-bottom: none;
+}
+
+.age-comparison tr:hover {
+    background: rgba(17, 153, 142, 0.05);
 }
 
 .chart-container {
@@ -754,6 +834,12 @@ footer a:hover {
         padding: 20px;
     }
 
+    /* Stack form to 1 column on tablets */
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
     .weight-display, .length-display, .head-display {
         font-size: 1.8rem;
     }
@@ -770,6 +856,31 @@ footer a:hover {
     .tooltip::after {
         width: 180px;
         font-size: 0.75rem;
+    }
+
+    /* Larger touch targets for sliders */
+    .age-slider::-webkit-slider-thumb,
+    .percentile-slider::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    .age-slider::-moz-range-thumb,
+    .percentile-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Larger preset buttons for touch */
+    .preset-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    /* Larger gender toggle buttons */
+    .toggle-label {
+        padding: 8px 14px;
+        font-size: 0.95rem;
     }
 }
 
@@ -812,5 +923,72 @@ footer a:hover {
         width: 150px;
         font-size: 0.7rem;
         padding: 6px 10px;
+    }
+
+    /* Even larger touch targets on small phones */
+    .age-slider::-webkit-slider-thumb,
+    .percentile-slider::-webkit-slider-thumb {
+        width: 28px;
+        height: 28px;
+    }
+
+    .age-slider::-moz-range-thumb,
+    .percentile-slider::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* Larger buttons */
+    button {
+        padding: 12px;
+        font-size: 1.05rem;
+    }
+
+    .preset-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    /* Hide interactive elements */
+    .welcome-section,
+    .tabs,
+    form,
+    .print-btn,
+    footer,
+    button[type="submit"] {
+        display: none !important;
+    }
+
+    /* Show all result tabs */
+    .tab-content {
+        display: block !important;
+    }
+
+    .result {
+        display: block !important;
+        page-break-after: always;
+        margin-bottom: 20px;
+    }
+
+    /* Clean up for print */
+    main {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .result {
+        box-shadow: none;
+        border: 1px solid #ddd;
     }
 }
