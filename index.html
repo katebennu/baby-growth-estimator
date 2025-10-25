@@ -3,107 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Weight Predictor</title>
+    <title>Baby Growth Predictor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Baby Weight Predictor</h1>
-            <p>Estimate your baby's weight based on WHO growth standards</p>
+            <h1>Baby Growth Predictor</h1>
+            <p>Estimate your baby's growth based on WHO growth standards</p>
         </header>
         
         <main>
-            <form id="weightForm">
-                <div class="form-group">
-                    <label for="age">Baby's Age (months):</label>
-                    <input type="number" id="age" name="age" min="0" max="24" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="gender" required>
-                        <option value="">Select gender</option>
-                        <option value="boy">Boy</option>
-                        <option value="girl">Girl</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="percentile">Percentile:</label>
-                    <select id="percentile" name="percentile" required>
-                        <option value="">Select percentile</option>
-                        <option value="2">2nd (2.3rd)</option>
-                        <option value="5">5th</option>
-                        <option value="10">10th</option>
-                        <option value="25">25th</option>
-                        <option value="50">50th (median)</option>
-                        <option value="75">75th</option>
-                        <option value="90">90th</option>
-                        <option value="95">95th</option>
-                        <option value="98">98th (97.7th)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Weight Unit:</label>
-                    <div class="unit-toggle">
-                        <input type="radio" id="kg" name="unit" value="kg" checked>
-                        <label for="kg" class="toggle-label">kg</label>
-                        <input type="radio" id="lbs" name="unit" value="lbs">
-                        <label for="lbs" class="toggle-label">lbs</label>
+            <div class="tabs">
+                <button class="tab-button active" data-tab="weight">Weight</button>
+                <button class="tab-button" data-tab="length">Length</button>
+                <button class="tab-button" data-tab="head">Head Circumference</button>
+            </div>
+
+            <!-- Weight Tab -->
+            <div id="weight-tab" class="tab-content active">
+                <form id="weightForm">
+                    <div class="form-group">
+                        <label for="weight-age">Baby's Age (months):</label>
+                        <input type="number" id="weight-age" name="age" min="0" max="24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight-gender">Gender:</label>
+                        <select id="weight-gender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="boy">Boy</option>
+                            <option value="girl">Girl</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight-percentile">Percentile:</label>
+                        <select id="weight-percentile" name="percentile" required>
+                            <option value="">Select percentile</option>
+                            <option value="2">2nd (2.3rd)</option>
+                            <option value="5">5th</option>
+                            <option value="10">10th</option>
+                            <option value="25">25th</option>
+                            <option value="50">50th (median)</option>
+                            <option value="75">75th</option>
+                            <option value="90">90th</option>
+                            <option value="95">95th</option>
+                            <option value="98">98th (97.7th)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight Unit:</label>
+                        <div class="unit-toggle">
+                            <input type="radio" id="weight-kg" name="weight-unit" value="kg" checked>
+                            <label for="weight-kg" class="toggle-label">kg</label>
+                            <input type="radio" id="weight-lbs" name="weight-unit" value="lbs">
+                            <label for="weight-lbs" class="toggle-label">lbs</label>
+                        </div>
+                    </div>
+
+                    <button type="submit">Calculate Weight</button>
+                </form>
+
+                <div id="weight-result" class="result hidden">
+                    <h3>Weight Estimate</h3>
+
+                    <div class="measurement-section">
+                        <div class="weight-display">
+                            <span id="weightValue">0</span>
+                            <span id="weightUnit" class="unit">kg</span>
+                        </div>
+                        <div class="weight-conversion">
+                            <span id="convertedWeight">0</span>
+                            <span id="convertedUnit" class="unit">lbs</span>
+                        </div>
+                    </div>
+
+                    <div class="measurement-info">
+                        <p id="weight-info"></p>
                     </div>
                 </div>
-                
-                <button type="submit">Calculate Growth Estimates</button>
-            </form>
-            
-            <div id="result" class="result hidden">
-                <h3>Growth Estimates</h3>
-                
-                <div class="measurement-section">
-                    <h4>Weight</h4>
-                    <div class="weight-display">
-                        <span id="weightValue">0</span>
-                        <span id="weightUnit" class="unit">kg</span>
-                    </div>
-                    <div class="weight-conversion">
-                        <span id="convertedWeight">0</span>
-                        <span id="convertedUnit" class="unit">lbs</span>
-                    </div>
-                </div>
-                
-                <div class="measurement-section">
-                    <h4>Length</h4>
-                    <div class="length-display">
-                        <span id="lengthValue">0</span>
-                        <span id="lengthUnit" class="unit">cm</span>
-                    </div>
-                    <div class="length-conversion">
-                        <span id="convertedLength">0</span>
-                        <span id="convertedLengthUnit" class="unit">inches</span>
-                    </div>
-                </div>
-                
-                <div class="measurement-section">
-                    <h4>Head Circumference</h4>
-                    <div class="head-display">
-                        <span id="headValue">0</span>
-                        <span id="headUnit" class="unit">cm</span>
-                    </div>
-                    <div class="head-conversion">
-                        <span id="convertedHead">0</span>
-                        <span id="convertedHeadUnit" class="unit">inches</span>
-                    </div>
-                </div>
-                
-                <div class="measurement-info">
-                    <p id="measurementInfo"></p>
+
+                <div id="weight-error" class="error hidden">
+                    <p id="weight-error-message"></p>
                 </div>
             </div>
-            
-            <div id="error" class="error hidden">
-                <p id="errorMessage"></p>
+
+            <!-- Length Tab -->
+            <div id="length-tab" class="tab-content">
+                <form id="lengthForm">
+                    <div class="form-group">
+                        <label for="length-age">Baby's Age (months):</label>
+                        <input type="number" id="length-age" name="age" min="0" max="24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="length-gender">Gender:</label>
+                        <select id="length-gender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="boy">Boy</option>
+                            <option value="girl">Girl</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="length-percentile">Percentile:</label>
+                        <select id="length-percentile" name="percentile" required>
+                            <option value="">Select percentile</option>
+                            <option value="2">2nd (2.3rd)</option>
+                            <option value="5">5th</option>
+                            <option value="10">10th</option>
+                            <option value="25">25th</option>
+                            <option value="50">50th (median)</option>
+                            <option value="75">75th</option>
+                            <option value="90">90th</option>
+                            <option value="95">95th</option>
+                            <option value="98">98th (97.7th)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Length Unit:</label>
+                        <div class="unit-toggle">
+                            <input type="radio" id="length-cm" name="length-unit" value="cm" checked>
+                            <label for="length-cm" class="toggle-label">cm</label>
+                            <input type="radio" id="length-inches" name="length-unit" value="inches">
+                            <label for="length-inches" class="toggle-label">inches</label>
+                        </div>
+                    </div>
+
+                    <button type="submit">Calculate Length</button>
+                </form>
+
+                <div id="length-result" class="result hidden">
+                    <h3>Length Estimate</h3>
+
+                    <div class="measurement-section">
+                        <div class="length-display">
+                            <span id="lengthValue">0</span>
+                            <span id="lengthUnit" class="unit">cm</span>
+                        </div>
+                        <div class="length-conversion">
+                            <span id="convertedLength">0</span>
+                            <span id="convertedLengthUnit" class="unit">inches</span>
+                        </div>
+                    </div>
+
+                    <div class="measurement-info">
+                        <p id="length-info"></p>
+                    </div>
+                </div>
+
+                <div id="length-error" class="error hidden">
+                    <p id="length-error-message"></p>
+                </div>
+            </div>
+
+            <!-- Head Circumference Tab -->
+            <div id="head-tab" class="tab-content">
+                <form id="headForm">
+                    <div class="form-group">
+                        <label for="head-age">Baby's Age (months):</label>
+                        <input type="number" id="head-age" name="age" min="0" max="24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="head-gender">Gender:</label>
+                        <select id="head-gender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="boy">Boy</option>
+                            <option value="girl">Girl</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="head-percentile">Percentile:</label>
+                        <select id="head-percentile" name="percentile" required>
+                            <option value="">Select percentile</option>
+                            <option value="2">2nd (2.3rd)</option>
+                            <option value="5">5th</option>
+                            <option value="10">10th</option>
+                            <option value="25">25th</option>
+                            <option value="50">50th (median)</option>
+                            <option value="75">75th</option>
+                            <option value="90">90th</option>
+                            <option value="95">95th</option>
+                            <option value="98">98th (97.7th)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Head Circumference Unit:</label>
+                        <div class="unit-toggle">
+                            <input type="radio" id="head-cm" name="head-unit" value="cm" checked>
+                            <label for="head-cm" class="toggle-label">cm</label>
+                            <input type="radio" id="head-inches" name="head-unit" value="inches">
+                            <label for="head-inches" class="toggle-label">inches</label>
+                        </div>
+                    </div>
+
+                    <button type="submit">Calculate Head Circumference</button>
+                </form>
+
+                <div id="head-result" class="result hidden">
+                    <h3>Head Circumference Estimate</h3>
+
+                    <div class="measurement-section">
+                        <div class="head-display">
+                            <span id="headValue">0</span>
+                            <span id="headUnit" class="unit">cm</span>
+                        </div>
+                        <div class="head-conversion">
+                            <span id="convertedHead">0</span>
+                            <span id="convertedHeadUnit" class="unit">inches</span>
+                        </div>
+                    </div>
+
+                    <div class="measurement-info">
+                        <p id="head-info"></p>
+                    </div>
+                </div>
+
+                <div id="head-error" class="error hidden">
+                    <p id="head-error-message"></p>
+                </div>
             </div>
         </main>
         

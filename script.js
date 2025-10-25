@@ -306,30 +306,28 @@ function formatHeadCircumference(head, unit) {
     }
 }
 
-// Function to get selected unit
-function getSelectedUnit() {
-    return document.querySelector('input[name="unit"]:checked').value;
+// Function to get selected unit for a specific tab
+function getSelectedUnit(tabName) {
+    return document.querySelector(`input[name="${tabName}-unit"]:checked`).value;
 }
 
-// Function to show result
-function showResult(measurements, age, gender, percentile) {
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('error');
-    const selectedUnit = getSelectedUnit();
-    
-    // Hide error if visible
+// Function to show weight result
+function showWeightResult(weight, age, gender, percentile) {
+    const resultDiv = document.getElementById('weight-result');
+    const errorDiv = document.getElementById('weight-error');
+    const selectedUnit = getSelectedUnit('weight');
+
     errorDiv.classList.add('hidden');
-    
-    // Weight display
+
     const weightValue = document.getElementById('weightValue');
     const weightUnit = document.getElementById('weightUnit');
     const convertedWeight = document.getElementById('convertedWeight');
     const convertedUnit = document.getElementById('convertedUnit');
-    
-    const weightLbs = kgToLbs(measurements.weight);
-    
+
+    const weightLbs = kgToLbs(weight);
+
     if (selectedUnit === 'kg') {
-        weightValue.textContent = measurements.weight;
+        weightValue.textContent = weight;
         weightUnit.textContent = 'kg';
         convertedWeight.textContent = formatWeight(weightLbs, 'lbs');
         convertedUnit.textContent = '';
@@ -338,70 +336,91 @@ function showResult(measurements, age, gender, percentile) {
     } else {
         weightValue.textContent = formatWeight(weightLbs, 'lbs');
         weightUnit.textContent = '';
-        convertedWeight.textContent = measurements.weight;
+        convertedWeight.textContent = weight;
         convertedUnit.textContent = 'kg';
         weightValue.parentElement.classList.add('lbs-oz');
         convertedWeight.parentElement.classList.remove('lbs-oz');
     }
-    
-    // Length display
+
+    const genderText = gender === 'boy' ? 'boy' : 'girl';
+    const percentileDesc = getPercentileDescription(percentile);
+    document.getElementById('weight-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    resultDiv.classList.remove('hidden');
+}
+
+// Function to show length result
+function showLengthResult(length, age, gender, percentile) {
+    const resultDiv = document.getElementById('length-result');
+    const errorDiv = document.getElementById('length-error');
+    const selectedUnit = getSelectedUnit('length');
+
+    errorDiv.classList.add('hidden');
+
     const lengthValue = document.getElementById('lengthValue');
     const lengthUnit = document.getElementById('lengthUnit');
     const convertedLength = document.getElementById('convertedLength');
     const convertedLengthUnit = document.getElementById('convertedLengthUnit');
-    
-    if (selectedUnit === 'kg') { // Use kg selection for cm/inches
-        lengthValue.textContent = measurements.length;
+
+    if (selectedUnit === 'cm') {
+        lengthValue.textContent = length;
         lengthUnit.textContent = 'cm';
-        convertedLength.textContent = formatLength(measurements.length, 'inches');
+        convertedLength.textContent = formatLength(length, 'inches');
         convertedLengthUnit.textContent = '';
     } else {
-        lengthValue.textContent = formatLength(measurements.length, 'inches');
+        lengthValue.textContent = formatLength(length, 'inches');
         lengthUnit.textContent = '';
-        convertedLength.textContent = measurements.length;
+        convertedLength.textContent = length;
         convertedLengthUnit.textContent = 'cm';
     }
-    
-    // Head circumference display
+
+    const genderText = gender === 'boy' ? 'boy' : 'girl';
+    const percentileDesc = getPercentileDescription(percentile);
+    document.getElementById('length-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
+    resultDiv.classList.remove('hidden');
+}
+
+// Function to show head circumference result
+function showHeadResult(head, age, gender, percentile) {
+    const resultDiv = document.getElementById('head-result');
+    const errorDiv = document.getElementById('head-error');
+    const selectedUnit = getSelectedUnit('head');
+
+    errorDiv.classList.add('hidden');
+
     const headValue = document.getElementById('headValue');
     const headUnit = document.getElementById('headUnit');
     const convertedHead = document.getElementById('convertedHead');
     const convertedHeadUnit = document.getElementById('convertedHeadUnit');
-    
-    if (selectedUnit === 'kg') { // Use kg selection for cm/inches
-        headValue.textContent = measurements.head;
+
+    if (selectedUnit === 'cm') {
+        headValue.textContent = head;
         headUnit.textContent = 'cm';
-        convertedHead.textContent = formatHeadCircumference(measurements.head, 'inches');
+        convertedHead.textContent = formatHeadCircumference(head, 'inches');
         convertedHeadUnit.textContent = '';
     } else {
-        headValue.textContent = formatHeadCircumference(measurements.head, 'inches');
+        headValue.textContent = formatHeadCircumference(head, 'inches');
         headUnit.textContent = '';
-        convertedHead.textContent = measurements.head;
+        convertedHead.textContent = head;
         convertedHeadUnit.textContent = 'cm';
     }
-    
-    // Update measurement info
+
     const genderText = gender === 'boy' ? 'boy' : 'girl';
     const percentileDesc = getPercentileDescription(percentile);
-    document.getElementById('measurementInfo').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
-    
-    // Show result
+    document.getElementById('head-info').textContent = `A ${age}-month-old ${genderText} at the ${percentileDesc}`;
+
     resultDiv.classList.remove('hidden');
 }
 
-// Function to show error
-function showError(message) {
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('error');
-    const errorMessage = document.getElementById('errorMessage');
-    
-    // Hide result if visible
+// Function to show error for specific tab
+function showError(tabName, message) {
+    const resultDiv = document.getElementById(`${tabName}-result`);
+    const errorDiv = document.getElementById(`${tabName}-error`);
+    const errorMessage = document.getElementById(`${tabName}-error-message`);
+
     resultDiv.classList.add('hidden');
-    
-    // Update error message
     errorMessage.textContent = message;
-    
-    // Show error
     errorDiv.classList.remove('hidden');
 }
 
@@ -422,49 +441,196 @@ function validateForm(age, gender, percentile) {
     return null;
 }
 
-// Event listener for form submission
+// Tab switching functionality
+function switchTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Show selected tab content
+    document.getElementById(`${tabName}-tab`).classList.add('active');
+
+    // Add active class to selected tab button
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+}
+
+// Synchronize inputs across tabs
+function syncInputs() {
+    // Age synchronization
+    const ageInputs = [
+        document.getElementById('weight-age'),
+        document.getElementById('length-age'),
+        document.getElementById('head-age')
+    ];
+
+    ageInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            ageInputs.forEach(otherInput => {
+                if (otherInput !== input) {
+                    otherInput.value = input.value;
+                }
+            });
+        });
+    });
+
+    // Gender synchronization
+    const genderSelects = [
+        document.getElementById('weight-gender'),
+        document.getElementById('length-gender'),
+        document.getElementById('head-gender')
+    ];
+
+    genderSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            genderSelects.forEach(otherSelect => {
+                if (otherSelect !== select) {
+                    otherSelect.value = select.value;
+                }
+            });
+        });
+    });
+
+    // Percentile synchronization
+    const percentileSelects = [
+        document.getElementById('weight-percentile'),
+        document.getElementById('length-percentile'),
+        document.getElementById('head-percentile')
+    ];
+
+    percentileSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            percentileSelects.forEach(otherSelect => {
+                if (otherSelect !== select) {
+                    otherSelect.value = select.value;
+                }
+            });
+        });
+    });
+}
+
+// Weight form submission
 document.getElementById('weightForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
-    const age = parseInt(document.getElementById('age').value);
-    const gender = document.getElementById('gender').value;
-    const percentile = document.getElementById('percentile').value;
-    
-    // Validate form
+
+    const age = parseInt(document.getElementById('weight-age').value);
+    const gender = document.getElementById('weight-gender').value;
+    const percentile = document.getElementById('weight-percentile').value;
+
     const validationError = validateForm(age, gender, percentile);
     if (validationError) {
-        showError(validationError);
+        showError('weight', validationError);
         return;
     }
-    
+
     try {
-        // Calculate all measurements
-        const measurements = calculateAllMeasurements(age, gender, percentile);
-        
-        // Show result
-        showResult(measurements, age, gender, percentile);
+        const weight = calculateMeasurement(age, gender, percentile, 'weight');
+        showWeightResult(weight, age, gender, percentile);
     } catch (error) {
-        showError('Error calculating measurements: ' + error.message);
+        showError('weight', 'Error calculating weight: ' + error.message);
     }
 });
 
-// Event listener for unit toggle changes
-document.querySelectorAll('input[name="unit"]').forEach(radio => {
+// Length form submission
+document.getElementById('lengthForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const age = parseInt(document.getElementById('length-age').value);
+    const gender = document.getElementById('length-gender').value;
+    const percentile = document.getElementById('length-percentile').value;
+
+    const validationError = validateForm(age, gender, percentile);
+    if (validationError) {
+        showError('length', validationError);
+        return;
+    }
+
+    try {
+        const length = calculateMeasurement(age, gender, percentile, 'length');
+        showLengthResult(length, age, gender, percentile);
+    } catch (error) {
+        showError('length', 'Error calculating length: ' + error.message);
+    }
+});
+
+// Head circumference form submission
+document.getElementById('headForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const age = parseInt(document.getElementById('head-age').value);
+    const gender = document.getElementById('head-gender').value;
+    const percentile = document.getElementById('head-percentile').value;
+
+    const validationError = validateForm(age, gender, percentile);
+    if (validationError) {
+        showError('head', validationError);
+        return;
+    }
+
+    try {
+        const head = calculateMeasurement(age, gender, percentile, 'head');
+        showHeadResult(head, age, gender, percentile);
+    } catch (error) {
+        showError('head', 'Error calculating head circumference: ' + error.message);
+    }
+});
+
+// Weight unit toggle change
+document.querySelectorAll('input[name="weight-unit"]').forEach(radio => {
     radio.addEventListener('change', function() {
-        // Only update if there's already a result displayed
-        const resultDiv = document.getElementById('result');
+        const resultDiv = document.getElementById('weight-result');
         if (!resultDiv.classList.contains('hidden')) {
-            // Get current form values
-            const age = parseInt(document.getElementById('age').value);
-            const gender = document.getElementById('gender').value;
-            const percentile = document.getElementById('percentile').value;
-            
-            // Recalculate and show result with new unit
+            const age = parseInt(document.getElementById('weight-age').value);
+            const gender = document.getElementById('weight-gender').value;
+            const percentile = document.getElementById('weight-percentile').value;
+
             try {
-                const measurements = calculateAllMeasurements(age, gender, percentile);
-                showResult(measurements, age, gender, percentile);
+                const weight = calculateMeasurement(age, gender, percentile, 'weight');
+                showWeightResult(weight, age, gender, percentile);
             } catch (error) {
-                // If there's an error, just hide the result
+                resultDiv.classList.add('hidden');
+            }
+        }
+    });
+});
+
+// Length unit toggle change
+document.querySelectorAll('input[name="length-unit"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const resultDiv = document.getElementById('length-result');
+        if (!resultDiv.classList.contains('hidden')) {
+            const age = parseInt(document.getElementById('length-age').value);
+            const gender = document.getElementById('length-gender').value;
+            const percentile = document.getElementById('length-percentile').value;
+
+            try {
+                const length = calculateMeasurement(age, gender, percentile, 'length');
+                showLengthResult(length, age, gender, percentile);
+            } catch (error) {
+                resultDiv.classList.add('hidden');
+            }
+        }
+    });
+});
+
+// Head unit toggle change
+document.querySelectorAll('input[name="head-unit"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const resultDiv = document.getElementById('head-result');
+        if (!resultDiv.classList.contains('hidden')) {
+            const age = parseInt(document.getElementById('head-age').value);
+            const gender = document.getElementById('head-gender').value;
+            const percentile = document.getElementById('head-percentile').value;
+
+            try {
+                const head = calculateMeasurement(age, gender, percentile, 'head');
+                showHeadResult(head, age, gender, percentile);
+            } catch (error) {
                 resultDiv.classList.add('hidden');
             }
         }
@@ -473,5 +639,16 @@ document.querySelectorAll('input[name="unit"]').forEach(radio => {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Baby Weight Predictor loaded successfully');
+    console.log('Baby Growth Predictor loaded successfully');
+
+    // Initialize tab button event listeners
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            switchTab(tabName);
+        });
+    });
+
+    // Initialize input synchronization after DOM is loaded
+    syncInputs();
 });
