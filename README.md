@@ -6,19 +6,21 @@ A web application that estimates baby growth measurements (weight, length, and h
 
 ## Features
 
+- **Modern React UI**: Built with React 18 for fast, interactive experience
 - **Tabbed Interface**: Separate tabs for weight, length, and head circumference measurements
 - **Interactive Growth Charts**: Visual percentile curves (5th, 25th, 50th, 75th, 95th) with your baby's position highlighted
-- **Age Range**: 0-24 months
-- **Gender Support**: Boys and Girls
-- **Percentile Options**: 2nd, 5th, 10th, 25th, 50th (median), 75th, 90th, 95th, and 98th percentiles
+- **Default Charts**: View WHO growth curves immediately on page load
+- **Age Slider**: Interactive slider for ages 0-24 months with real-time display
+- **Percentile Slider**: Visual percentile selection with quick preset buttons (25th, 50th, 75th)
+- **Future Growth Estimates**: Age comparison table showing projected measurements at 3-month intervals
+- **Practical Planning Tips**: Car seat, stroller, and crib recommendations based on measurements
+- **Gender Support**: Boys and Girls with different growth patterns
 - **Comprehensive Measurements**: Weight, length, and head circumference estimates
-- **Unit Conversion**: Toggle between metric and imperial units with automatic conversion
-- **Dual Display**: Shows measurements in both selected and converted units
+- **Unit Display**: Shows both imperial (lbs/oz, feet/inches) and metric (kg, cm) simultaneously
 - **Lbs/Oz Format**: Displays pounds and ounces instead of decimal pounds
-- **Length Display**: Shows length in feet/inches or cm format
 - **Synchronized Inputs**: Age, gender, and percentile sync across all tabs
-- **Compact Design**: Optimized layout to view results without scrolling
-- **Responsive Design**: Works on desktop and mobile devices
+- **Print-Friendly**: Print button for saving or sharing results
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Real-time Calculation**: Instant estimates based on WHO data
 
 ## How to Use
@@ -45,38 +47,73 @@ The application uses [WHO Child Growth Standards data from the CDC](https://www.
 
 ## Technical Details
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Framework**: React 18 with Vite
+- **Frontend**: Modern JavaScript (ES6+), React Hooks
 - **Charting**: Chart.js for interactive growth curve visualization
 - **Data Processing**: Direct integration of WHO percentile data
 - **Calculation Method**: Uses WHO LMS (Lambda-Mu-Sigma) method for growth standards
+- **Build Tool**: Vite for fast development and optimized production builds
+- **Testing**: Vitest with comprehensive test coverage
 - **Browser Support**: Modern browsers with ES6 support
 - **Deployment**: GitHub Pages (static hosting)
 
 ## Running the Application
 
-### Option 1: Direct File Access
-Simply open `index.html` in your web browser.
-
-### Option 2: Local Server (Recommended)
+### Development Server
 ```bash
-# Using Python 3
-python3 -m http.server 8000
+# Install dependencies
+npm install
 
-# Using Node.js (if you have http-server installed)
-npx http-server
-
-# Using PHP
-php -S localhost:8000
+# Start development server
+npm run dev
 ```
 
-Then open `http://localhost:8000` in your browser.
+Then open the URL shown in the terminal (typically `http://localhost:5173`).
+
+### Production Build
+```bash
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+## Deployment to GitHub Pages
+
+### Quick Deploy
+```bash
+npm run deploy
+```
+
+This will:
+1. Build the production version
+2. Push the build to the `gh-pages` branch
+3. Deploy to https://katebennu.github.io/baby-growth-estimator
+
+### First-Time Setup
+
+1. **Commit your changes**:
+   ```bash
+   git add .
+   git commit -m "Update app"
+   git push origin main
+   ```
+
+2. **Deploy**:
+   ```bash
+   npm run deploy
+   ```
+
+3. **Enable GitHub Pages** (first time only):
+   - Go to repository Settings → Pages
+   - Under "Source", select the `gh-pages` branch
+   - Click "Save"
+   - Your site will be live in a few minutes
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions and troubleshooting.
 
 ## Development
-
-### Installation
-```bash
-npm install
-```
 
 ### Running Tests
 ```bash
@@ -105,44 +142,57 @@ Coverage excludes UI-related modules (forms.js, ui.js, charts.js, main.js) which
 
 ```
 baby-weight-predictor/
-├── index.html          # Main HTML file
+├── index.html          # Vite entry point
 ├── styles.css          # CSS styling
-├── js/                 # JavaScript modules (ES6)
-│   ├── main.js         # Application initialization
+├── vite.config.js      # Vite configuration
+├── src/                # React application source
+│   ├── main.jsx        # React entry point
+│   ├── App.jsx         # Root component
+│   ├── components/     # React components
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── WelcomeSection.jsx
+│   │   ├── TabButtons.jsx
+│   │   ├── MeasurementTab.jsx
+│   │   ├── MeasurementForm.jsx
+│   │   ├── MeasurementResult.jsx
+│   │   └── DefaultChart.jsx
 │   ├── data.js         # CSV loading and parsing
 │   ├── calculations.js # WHO LMS formulas
 │   ├── conversions.js  # Unit conversion functions
-│   ├── charts.js       # Chart.js functions
-│   ├── ui.js          # Display functions
-│   └── forms.js       # Form handling and validation
-├── tests/             # Test suite (Vitest)
+│   └── charts.js       # Chart.js integration
+├── public/             # Static assets
+│   └── WHO-*.csv       # WHO growth data files
+├── tests/              # Test suite (Vitest)
 │   ├── calculations.test.js
 │   ├── conversions.test.js
 │   └── data.test.js
-├── package.json       # Dependencies and scripts
-├── vitest.config.js   # Test configuration
-├── README.md          # This file
-├── CLAUDE.md         # Developer documentation
-├── .gitignore        # Git ignore rules
-├── WHO-Boys-Weight-for-age-Percentiles.csv
-├── WHO-Girls-Weight-for-age-Percentiles.csv
-├── WHO-Boys-Length-for-age-Percentiles.csv
-├── WHO-Girls-Length-for-age-Percentiles.csv
-├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
-└── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
+├── package.json        # Dependencies and scripts
+├── README.md           # This file
+├── DEPLOYMENT.md       # Deployment instructions
+└── CLAUDE.md          # Developer documentation
 ```
 
-### Module Architecture
+### React Component Architecture
 
-The application uses ES6 modules for better code organization:
+The application uses React with functional components and hooks:
 
-- **main.js**: Entry point, coordinates initialization
+- **App.jsx**: Root component managing global state (active tab, shared inputs, data loading)
+- **Header.jsx**: Application header
+- **Footer.jsx**: Footer with GitHub link
+- **WelcomeSection.jsx**: Welcome text and collapsible help sections
+- **TabButtons.jsx**: Tab navigation (Weight/Length/Head Circumference)
+- **MeasurementTab.jsx**: Container for each measurement type
+- **MeasurementForm.jsx**: Reusable form component with sliders and inputs
+- **MeasurementResult.jsx**: Displays results with charts and practical tips
+- **DefaultChart.jsx**: Shows default WHO percentile curves before calculation
+
+### Core Modules
+
 - **data.js**: Loads and parses WHO CSV data files
 - **calculations.js**: Implements WHO LMS (Lambda-Mu-Sigma) method
 - **conversions.js**: Unit conversions (kg/lbs, cm/inches)
 - **charts.js**: Chart.js integration for growth curves
-- **ui.js**: DOM manipulation and result display
-- **forms.js**: Form validation and event handling
 
 ## Example Usage
 
