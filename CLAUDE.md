@@ -27,15 +27,41 @@ Then open `http://localhost:8000` in your browser.
 ### Direct File Access
 Open `index.html` directly in a web browser (may have CORS issues with CSV loading in some browsers).
 
+## Development
+
+### Installation
+```bash
+npm install
+```
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Suite
+- **calculations.test.js**: Tests for WHO LMS formulas, z-score conversions, percentile calculations
+- **conversions.test.js**: Tests for unit conversions (kg/lbs, cm/inches) and formatting
+- **data.test.js**: Tests for CSV loading, parsing, and data validation
+
+The test suite uses Vitest and covers core calculation and data handling logic. UI modules are excluded from coverage as they require DOM environment.
+
 ## Architecture
 
 ### Data Layer
-- **WHO Growth Data**: Hard-coded JavaScript arrays containing WHO LMS (Lambda-Mu-Sigma) method data
-  - Weight data: `boysWeightData`, `girlsWeightData`
-  - Length data: `boysLengthData`, `girlsLengthData`
-  - Head circumference data: `boysHeadData`, `girlsHeadData`
+- **WHO Growth Data**: Loaded from CSV files at runtime using the Fetch API, containing WHO LMS (Lambda-Mu-Sigma) method data
+  - Weight data: `boysWeightData`, `girlsWeightData` (loaded from WHO-*-Weight-for-age-Percentiles.csv)
+  - Length data: `boysLengthData`, `girlsLengthData` (loaded from WHO-*-Length-for-age-Percentiles.csv)
+  - Head circumference data: `boysHeadData`, `girlsHeadData` (loaded from WHO-*-Head-Circumference-for-age-Percentiles.csv)
 - Each data array contains rows of [age, L, M, S, P2.3, P5, P10, P25, P50, P75, P90, P95, P97.7] values
-- Percentile column indices are mapped via `percentileMap` object
+- CSV files are parsed into numeric arrays by `data.js` module
 
 ### Calculation Engine
 - `calculateMeasurement(age, gender, percentile, measurementType)`: Core function that looks up the appropriate data array, finds the age row, and returns the percentile value
@@ -68,7 +94,21 @@ baby-weight-predictor/
 │   ├── charts.js       # Chart.js functions
 │   ├── ui.js          # Display functions
 │   └── forms.js       # Form handling and validation
-└── WHO-*-Percentiles.csv  # WHO growth data CSV files (loaded at runtime)
+├── tests/             # Test suite (Vitest)
+│   ├── calculations.test.js
+│   ├── conversions.test.js
+│   └── data.test.js
+├── package.json       # Dependencies and scripts
+├── vitest.config.js   # Test configuration
+├── .gitignore        # Git ignore rules
+├── README.md         # User documentation
+├── CLAUDE.md         # Developer documentation
+├── WHO-Boys-Weight-for-age-Percentiles.csv
+├── WHO-Girls-Weight-for-age-Percentiles.csv
+├── WHO-Boys-Length-for-age-Percentiles.csv
+├── WHO-Girls-Length-for-age-Percentiles.csv
+├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
+└── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
 ```
 
 ### Module Dependencies

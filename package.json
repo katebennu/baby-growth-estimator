@@ -1,0 +1,26 @@
+{
+  "name": "baby-growth-estimator",
+  "version": "1.0.0",
+  "description": "Baby growth estimator based on WHO growth standards",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "baby",
+    "growth",
+    "WHO",
+    "percentile",
+    "health"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
+    "jsdom": "^27.0.1",
+    "vitest": "^1.0.4"
+  }
+}

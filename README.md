@@ -1,6 +1,6 @@
 # Baby Growth Estimator
 
-A comprehensive web application that estimates baby growth measurements (weight, length, and head circumference) based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
+A web application that estimates baby growth measurements (weight, length, and head circumference) based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
 
 ## 🌐 Live Demo
 
@@ -73,6 +73,36 @@ php -S localhost:8000
 
 Then open `http://localhost:8000` in your browser.
 
+## Development
+
+### Installation
+```bash
+npm install
+```
+
+### Running Tests
+```bash
+# Run tests once
+npm test
+
+# Run tests in watch mode
+npm run test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Coverage
+The project includes comprehensive test coverage for:
+- **calculations.js**: WHO LMS formulas, percentile conversions, z-score calculations
+- **conversions.js**: Unit conversion functions (kg/lbs, cm/inches, formatting)
+- **data.js**: CSV loading and parsing
+
+Coverage excludes UI-related modules (forms.js, ui.js, charts.js, main.js) which require browser DOM environment.
+
 ## File Structure
 
 ```
@@ -87,8 +117,15 @@ baby-weight-predictor/
 │   ├── charts.js       # Chart.js functions
 │   ├── ui.js          # Display functions
 │   └── forms.js       # Form handling and validation
-├── README.md           # This file
-├── CLAUDE.md          # Developer documentation
+├── tests/             # Test suite (Vitest)
+│   ├── calculations.test.js
+│   ├── conversions.test.js
+│   └── data.test.js
+├── package.json       # Dependencies and scripts
+├── vitest.config.js   # Test configuration
+├── README.md          # This file
+├── CLAUDE.md         # Developer documentation
+├── .gitignore        # Git ignore rules
 ├── WHO-Boys-Weight-for-age-Percentiles.csv
 ├── WHO-Girls-Weight-for-age-Percentiles.csv
 ├── WHO-Boys-Length-for-age-Percentiles.csv
