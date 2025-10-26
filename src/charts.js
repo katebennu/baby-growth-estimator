@@ -34,6 +34,51 @@ let weightChart = null;
 let lengthChart = null;
 let headChart = null;
 
+// Function to update just the selected point (no re-render of curves)
+export function updateChartPoint(canvasOrId, measurementType, gender, selectedAge, selectedPercentile, selectedValue) {
+    // Support both canvas element (from React ref) and canvas ID (from vanilla JS)
+    const canvas = typeof canvasOrId === 'string'
+        ? document.getElementById(canvasOrId)
+        : canvasOrId;
+
+    if (!canvas) {
+        console.error('Canvas element not found:', canvasOrId);
+        return;
+    }
+
+    // Get the existing chart instance
+    let chart = canvas.chart;
+
+    if (!chart) {
+        // If no chart exists, create one
+        createGrowthChart(canvasOrId, measurementType, gender, selectedAge, selectedPercentile, selectedValue);
+        return;
+    }
+
+    // Find the "Your baby" dataset (it should be the last one)
+    const yourBabyDatasetIndex = chart.data.datasets.findIndex(ds => ds.label && ds.label.includes('Your baby'));
+
+    if (yourBabyDatasetIndex !== -1) {
+        // Update existing dataset
+        chart.data.datasets[yourBabyDatasetIndex].label = `Your baby (${getPercentileDescription(selectedPercentile)})`;
+        chart.data.datasets[yourBabyDatasetIndex].data = [{ x: selectedAge, y: selectedValue }];
+    } else {
+        // Add new dataset for selected point
+        chart.data.datasets.push({
+            label: `Your baby (${getPercentileDescription(selectedPercentile)})`,
+            data: [{ x: selectedAge, y: selectedValue }],
+            borderColor: 'rgba(255, 0, 0, 1)',
+            backgroundColor: 'rgba(255, 0, 0, 1)',
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            showLine: false
+        });
+    }
+
+    // Update the chart without recreating it
+    chart.update('none'); // 'none' mode = no animation for instant update
+}
+
 // Function to create growth chart
 export function createGrowthChart(canvasOrId, measurementType, gender, selectedAge = null, selectedPercentile = null, selectedValue = null) {
     // Support both canvas element (from React ref) and canvas ID (from vanilla JS)

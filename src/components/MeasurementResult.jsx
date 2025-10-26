@@ -1,24 +1,38 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { kgToLbs, cmToInches, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from '../conversions'
 import { getPercentileDescription, generateAgeComparison } from '../calculations'
-import { createGrowthChart } from '../charts'
+import { createGrowthChart, updateChartPoint } from '../charts'
 
 function MeasurementResult({ type, measurement, age, gender, percentile }) {
   const chartRef = useRef(null)
   const selectedUnit = getSelectedUnit(type)
+  const [chartInitialized, setChartInitialized] = useState(false)
+  const prevGenderRef = useRef(gender)
 
   useEffect(() => {
-    if (chartRef.current) {
-      createGrowthChart(chartRef.current, type, gender, age, percentile, measurement)
-    }
+    if (!chartRef.current) return
 
-    // Cleanup function to destroy chart when component unmounts
+    const genderChanged = prevGenderRef.current !== gender
+
+    // If gender changed or chart not initialized, recreate the entire chart
+    if (!chartInitialized || genderChanged) {
+      createGrowthChart(chartRef.current, type, gender, age, percentile, measurement)
+      setChartInitialized(true)
+      prevGenderRef.current = gender
+    } else {
+      // Otherwise, just update the point
+      updateChartPoint(chartRef.current, type, gender, age, percentile, measurement)
+    }
+  }, [type, gender, age, percentile, measurement, chartInitialized])
+
+  // Separate cleanup effect that only runs on unmount
+  useEffect(() => {
     return () => {
       if (chartRef.current && chartRef.current.chart) {
         chartRef.current.chart.destroy()
       }
     }
-  }, [type, gender, age, percentile, measurement])
+  }, [])
 
   const getContext = () => {
     if (type === 'weight') {

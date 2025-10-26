@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { calculateMeasurement } from '../calculations'
 
 function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, onError }) {
@@ -17,26 +18,14 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
     onInputChange({ ...sharedInputs, percentile })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
+  // Auto-calculate when inputs change
+  useEffect(() => {
     const { age, gender, percentile } = sharedInputs
 
-    // Validation
-    if (!age || age < 0 || age > 24) {
-      onError('Please enter a valid age between 0 and 24 months')
-      return
-    }
-
-    if (!gender) {
-      onError('Please select a gender')
-      return
-    }
-
-    if (!percentile || percentile < 1 || percentile > 99) {
-      onError('Please enter a valid percentile between 1 and 99')
-      return
-    }
+    // Validate inputs
+    if (!age || age < 0 || age > 24) return
+    if (!gender) return
+    if (!percentile || percentile < 1 || percentile > 99) return
 
     try {
       const measurement = calculateMeasurement(age, gender, percentile, type)
@@ -44,10 +33,10 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
     } catch (error) {
       onError(`Error calculating ${label.toLowerCase()}: ${error.message}`)
     }
-  }
+  }, [sharedInputs.age, sharedInputs.gender, sharedInputs.percentile, type, label, onSubmit, onError])
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => e.preventDefault()}>
       <div className="form-grid">
         <div className="form-group">
           <label htmlFor={`${type}-age`}>
@@ -125,8 +114,6 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
           </div>
         </div>
       </div>
-
-      <button type="submit">Calculate {label}</button>
     </form>
   )
 }
