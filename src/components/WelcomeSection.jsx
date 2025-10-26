@@ -1,38 +1,52 @@
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Alert from '@mui/material/Alert'
+
 function WelcomeSection() {
   return (
-    <div className="welcome-section">
-      <p className="welcome-text">
+    <Box sx={{ mb: 4 }}>
+      <Alert severity="info" sx={{ mb: 2 }}>
         Use WHO growth standards to estimate your baby's future measurements and plan ahead for important purchases.
         Whether you're shopping for clothes, choosing a stroller, or planning for a car seat upgrade, knowing your baby's
         expected size helps you make informed decisions.
-      </p>
+      </Alert>
 
-      <details className="help-section">
-        <summary>How to Use This Tool</summary>
-        <div className="help-content">
-          <ul>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontWeight: 600 }}>How to Use This Tool</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box component="ul" sx={{ pl: 2 }}>
             <li><strong>Choose a measurement type:</strong> Weight, Length, or Head Circumference</li>
             <li><strong>Enter baby's age:</strong> Any age from 0-24 months (whole months only)</li>
             <li><strong>Select gender:</strong> Growth patterns differ between boys and girls</li>
             <li><strong>Pick a percentile:</strong> Use 50th for average, or match your baby's current growth curve</li>
             <li><strong>Get estimates:</strong> See predicted measurements with helpful charts</li>
-          </ul>
-        </div>
-      </details>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
 
-      <details className="help-section">
-        <summary>Understanding Percentiles</summary>
-        <div className="help-content">
-          <p><strong>What do percentiles mean?</strong></p>
-          <ul>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontWeight: 600 }}>Understanding Percentiles</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="subtitle2" gutterBottom><strong>What do percentiles mean?</strong></Typography>
+          <Box component="ul" sx={{ pl: 2, mb: 2 }}>
             <li><strong>50th percentile:</strong> Average size - half of babies are larger, half are smaller</li>
             <li><strong>75th percentile:</strong> Larger than average - bigger than 75% of babies</li>
             <li><strong>25th percentile:</strong> Smaller than average - smaller than 75% of babies</li>
-          </ul>
-          <p className="help-note">All percentiles are healthy! Babies grow at different rates, and consistency matters more than the specific percentile.</p>
-        </div>
-      </details>
-    </div>
+          </Box>
+          <Alert severity="success">
+            All percentiles are healthy! Babies grow at different rates, and consistency matters more than the specific percentile.
+          </Alert>
+        </AccordionDetails>
+      </Accordion>
+    </Box>
   )
 }
 

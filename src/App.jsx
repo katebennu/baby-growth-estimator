@@ -1,4 +1,11 @@
 import { useState, useEffect } from 'react'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
+import theme from './theme'
 import { loadAllData } from './data'
 import Header from './components/Header'
 import WelcomeSection from './components/WelcomeSection'
@@ -36,66 +43,81 @@ function App() {
 
   if (dataError) {
     return (
-      <div className="container">
-        <Header />
-        <main style={{ background: 'white', padding: '40px', textAlign: 'center', borderRadius: '15px' }}>
-          <p style={{ color: '#ff6b6b', fontSize: '1.1rem' }}>
-            Failed to load WHO growth data. Please refresh the page or try again later.
-          </p>
-          <p style={{ marginTop: '20px', fontSize: '0.9rem', color: '#666' }}>
-            Make sure you're running this application through a local server.
-          </p>
-        </main>
-      </div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 3 }}>
+          <Container maxWidth="md">
+            <Header />
+            <Box sx={{ mt: 3 }}>
+              <Alert severity="error">
+                Failed to load WHO growth data. Please refresh the page or try again later.
+              </Alert>
+              <Alert severity="info" sx={{ mt: 2 }}>
+                Make sure you're running this application through a local server.
+              </Alert>
+            </Box>
+          </Container>
+        </Box>
+      </ThemeProvider>
     )
   }
 
   if (!dataLoaded) {
     return (
-      <div className="container">
-        <Header />
-        <main style={{ background: 'white', padding: '40px', textAlign: 'center', borderRadius: '15px' }}>
-          <p style={{ fontSize: '1.1rem', color: '#11998e' }}>Loading WHO growth data...</p>
-        </main>
-      </div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <CircularProgress size={60} />
+            <Box sx={{ mt: 2, color: 'primary.main', fontSize: '1.1rem' }}>
+              Loading WHO growth data...
+            </Box>
+          </Box>
+        </Box>
+      </ThemeProvider>
     )
   }
 
   return (
-    <div className="container">
-      <Header />
-      <main>
-        <WelcomeSection />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 3 }}>
+        <Container maxWidth="md">
+          <Header />
+          <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, p: 4, mt: 3, boxShadow: 3 }}>
+            <WelcomeSection />
 
-        <TabButtons
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+            <TabButtons
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
 
-        <MeasurementTab
-          type="weight"
-          active={activeTab === 'weight'}
-          sharedInputs={sharedInputs}
-          onInputChange={setSharedInputs}
-        />
+            <MeasurementTab
+              type="weight"
+              active={activeTab === 'weight'}
+              sharedInputs={sharedInputs}
+              onInputChange={setSharedInputs}
+            />
 
-        <MeasurementTab
-          type="length"
-          active={activeTab === 'length'}
-          sharedInputs={sharedInputs}
-          onInputChange={setSharedInputs}
-        />
+            <MeasurementTab
+              type="length"
+              active={activeTab === 'length'}
+              sharedInputs={sharedInputs}
+              onInputChange={setSharedInputs}
+            />
 
-        <MeasurementTab
-          type="head"
-          active={activeTab === 'head'}
-          sharedInputs={sharedInputs}
-          onInputChange={setSharedInputs}
-        />
-      </main>
+            <MeasurementTab
+              type="head"
+              active={activeTab === 'head'}
+              sharedInputs={sharedInputs}
+              onInputChange={setSharedInputs}
+            />
+          </Box>
 
-      <Footer />
-    </div>
+          <Footer />
+        </Container>
+      </Box>
+    </ThemeProvider>
   )
 }
 

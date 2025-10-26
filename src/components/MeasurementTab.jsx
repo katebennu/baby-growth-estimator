@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Box from '@mui/material/Box'
+import Alert from '@mui/material/Alert'
 import MeasurementForm from './MeasurementForm'
 import MeasurementResult from './MeasurementResult'
 import DefaultChart from './DefaultChart'
@@ -28,8 +30,10 @@ function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
     setError(errorMessage)
   }
 
+  if (!active) return null
+
   return (
-    <div id={`${type}-tab`} className={`tab-content ${active ? 'active' : ''}`}>
+    <Box id={`${type}-tab`}>
       <MeasurementForm
         type={type}
         label={labels[type]}
@@ -49,11 +53,11 @@ function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
       )}
 
       {error && (
-        <div className="error">
-          <p>{error}</p>
-        </div>
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
       )}
-    </div>
+    </Box>
   )
 }
 

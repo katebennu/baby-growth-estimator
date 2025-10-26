@@ -1,4 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Paper from '@mui/material/Paper'
+import Button from '@mui/material/Button'
+import Link from '@mui/material/Link'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import PrintIcon from '@mui/icons-material/Print'
 import { kgToLbs, cmToInches, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from '../conversions'
 import { getPercentileDescription, generateAgeComparison } from '../calculations'
 import { createGrowthChart, updateChartPoint } from '../charts'
@@ -74,79 +89,130 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
 
       if (selectedUnit === 'kg') {
         return (
-          <>
-            <div className="weight-display">
-              <span>{measurement}</span>
-              <span className="unit">kg</span>
-            </div>
-            <div className="weight-conversion lbs-oz">
-              <span>{formatWeight(weightLbs, 'lbs')}</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {measurement}
+                <Typography component="span" variant="h5" sx={{ ml: 1 }}>kg</Typography>
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {formatWeight(weightLbs, 'lbs')}
+            </Typography>
+          </Box>
         )
       } else {
         return (
-          <>
-            <div className="weight-display lbs-oz">
-              <span>{formatWeight(weightLbs, 'lbs')}</span>
-            </div>
-            <div className="weight-conversion">
-              <span>{measurement}</span>
-              <span className="unit">kg</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {formatWeight(weightLbs, 'lbs')}
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {measurement} kg
+            </Typography>
+          </Box>
         )
       }
     } else if (type === 'length') {
       if (selectedUnit === 'cm') {
         return (
-          <>
-            <div className="length-display">
-              <span>{measurement}</span>
-              <span className="unit">cm</span>
-            </div>
-            <div className="length-conversion">
-              <span>{formatLength(measurement, 'inches')}</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {measurement}
+                <Typography component="span" variant="h5" sx={{ ml: 1 }}>cm</Typography>
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {formatLength(measurement, 'inches')}
+            </Typography>
+          </Box>
         )
       } else {
         return (
-          <>
-            <div className="length-display">
-              <span>{formatLength(measurement, 'inches')}</span>
-            </div>
-            <div className="length-conversion">
-              <span>{measurement}</span>
-              <span className="unit">cm</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {formatLength(measurement, 'inches')}
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {measurement} cm
+            </Typography>
+          </Box>
         )
       }
     } else if (type === 'head') {
       if (selectedUnit === 'cm') {
         return (
-          <>
-            <div className="head-display">
-              <span>{measurement}</span>
-              <span className="unit">cm</span>
-            </div>
-            <div className="head-conversion">
-              <span>{formatHeadCircumference(measurement, 'inches')}</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {measurement}
+                <Typography component="span" variant="h5" sx={{ ml: 1 }}>cm</Typography>
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {formatHeadCircumference(measurement, 'inches')}
+            </Typography>
+          </Box>
         )
       } else {
         return (
-          <>
-            <div className="head-display">
-              <span>{formatHeadCircumference(measurement, 'inches')}</span>
-            </div>
-            <div className="head-conversion">
-              <span>{measurement}</span>
-              <span className="unit">cm</span>
-            </div>
-          </>
+          <Box sx={{ textAlign: 'center', my: 3 }}>
+            <Box sx={{
+              bgcolor: 'primary.main',
+              color: 'white',
+              p: 3,
+              borderRadius: 2,
+              display: 'inline-block',
+              minWidth: 200
+            }}>
+              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+                {formatHeadCircumference(measurement, 'inches')}
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              {measurement} cm
+            </Typography>
+          </Box>
         )
       }
     }
@@ -160,42 +226,46 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
     }
 
     return (
-      <div className="age-comparison">
-        <h4>Future Growth Estimates</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Age</th>
-              <th>Estimated {type === 'weight' ? 'Weight' : type === 'length' ? 'Length' : 'Head Circumference'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {comparisons.map(({ age: compAge, measurement: compMeasurement }) => {
-              let displayValue
-              if (type === 'weight') {
-                displayValue = selectedUnit === 'lbs'
-                  ? formatWeight(kgToLbs(compMeasurement), 'lbs')
-                  : compMeasurement + ' kg'
-              } else if (type === 'length') {
-                displayValue = selectedUnit === 'inches'
-                  ? formatLength(compMeasurement, 'inches')
-                  : compMeasurement + ' cm'
-              } else if (type === 'head') {
-                displayValue = selectedUnit === 'inches'
-                  ? formatHeadCircumference(compMeasurement, 'inches')
-                  : compMeasurement + ' cm'
-              }
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+          Future Growth Estimates
+        </Typography>
+        <TableContainer component={Paper} variant="outlined">
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>Age</strong></TableCell>
+                <TableCell><strong>Estimated {type === 'weight' ? 'Weight' : type === 'length' ? 'Length' : 'Head Circumference'}</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {comparisons.map(({ age: compAge, measurement: compMeasurement }) => {
+                let displayValue
+                if (type === 'weight') {
+                  displayValue = selectedUnit === 'lbs'
+                    ? formatWeight(kgToLbs(compMeasurement), 'lbs')
+                    : compMeasurement + ' kg'
+                } else if (type === 'length') {
+                  displayValue = selectedUnit === 'inches'
+                    ? formatLength(compMeasurement, 'inches')
+                    : compMeasurement + ' cm'
+                } else if (type === 'head') {
+                  displayValue = selectedUnit === 'inches'
+                    ? formatHeadCircumference(compMeasurement, 'inches')
+                    : compMeasurement + ' cm'
+                }
 
-              return (
-                <tr key={compAge}>
-                  <td>{compAge} months</td>
-                  <td>{displayValue}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
+                return (
+                  <TableRow key={compAge}>
+                    <TableCell>{compAge} months</TableCell>
+                    <TableCell>{displayValue}</TableCell>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     )
   }
 
@@ -210,38 +280,62 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
   }
 
   return (
-    <div className="result">
-      <div className="result-header">
-        <h3>{titleMap[type]}</h3>
-        <button type="button" className="print-btn" onClick={() => window.print()}>📄 Print</button>
-      </div>
+    <Box sx={{ mt: 3 }}>
+      {/* Header with Title and Print Button */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 600 }}>
+          {titleMap[type]}
+        </Typography>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<PrintIcon />}
+          onClick={() => window.print()}
+        >
+          Print
+        </Button>
+      </Box>
 
-      <div className="measurement-section">
-        {renderMeasurementDisplay()}
-      </div>
+      {/* Measurement Display */}
+      {renderMeasurementDisplay()}
 
-      <div className="chart-container">
+      {/* Chart */}
+      <Paper variant="outlined" sx={{ p: 2, my: 3 }}>
         <canvas ref={chartRef}></canvas>
-        <p className="data-source">
-          Data source: <a href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">WHO Child Growth Standards (CDC)</a>
-        </p>
-      </div>
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1, textAlign: 'center' }}>
+          Data source:{' '}
+          <Link href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">
+            WHO Child Growth Standards (CDC)
+          </Link>
+        </Typography>
+      </Paper>
 
-      <div className="measurement-info">
-        <p>A {age}-month-old {genderText} at the {percentileDesc}</p>
+      {/* Information Section */}
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="body1" gutterBottom>
+          A {age}-month-old {genderText} at the {percentileDesc}
+        </Typography>
+
+        {/* Planning Tips */}
         {contexts.length > 0 && (
-          <div className="practical-tips">
-            <strong>Planning Tips:</strong>
-            <ul>
+          <Paper variant="outlined" sx={{ p: 2, mt: 2, bgcolor: 'grey.50' }}>
+            <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
+              Planning Tips:
+            </Typography>
+            <List dense disablePadding>
               {contexts.map((context, index) => (
-                <li key={index}>{context}</li>
+                <ListItem key={index} disableGutters>
+                  <ListItemText primary={context} />
+                </ListItem>
               ))}
-            </ul>
-          </div>
+            </List>
+          </Paper>
         )}
+
+        {/* Age Comparison Table */}
         {renderAgeComparison()}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

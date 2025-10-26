@@ -1,17 +1,29 @@
 import { useEffect } from 'react'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import Slider from '@mui/material/Slider'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import Tooltip from '@mui/material/Tooltip'
+import InfoIcon from '@mui/icons-material/Info'
 import { calculateMeasurement } from '../calculations'
 
 function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, onError }) {
-  const handleAgeChange = (e) => {
-    onInputChange({ ...sharedInputs, age: parseInt(e.target.value) })
+  const handleAgeChange = (event, newValue) => {
+    onInputChange({ ...sharedInputs, age: newValue })
   }
 
-  const handleGenderChange = (e) => {
-    onInputChange({ ...sharedInputs, gender: e.target.value })
+  const handleGenderChange = (event, newValue) => {
+    if (newValue !== null) {
+      onInputChange({ ...sharedInputs, gender: newValue })
+    }
   }
 
-  const handlePercentileChange = (e) => {
-    onInputChange({ ...sharedInputs, percentile: parseInt(e.target.value) })
+  const handlePercentileChange = (event, newValue) => {
+    onInputChange({ ...sharedInputs, percentile: newValue })
   }
 
   const handlePresetClick = (percentile) => {
@@ -36,85 +48,88 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
   }, [sharedInputs.age, sharedInputs.gender, sharedInputs.percentile, type, label, onSubmit, onError])
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <div className="form-grid">
-        <div className="form-group">
-          <label htmlFor={`${type}-age`}>
-            Age: <span id={`${type}-age-display`}>{sharedInputs.age}</span> months
-            <span className="tooltip" aria-label="Slide to select your baby's age from 0 to 24 months.">ⓘ</span>
-          </label>
-          <input
-            type="range"
-            id={`${type}-age`}
-            name="age"
-            min="0"
-            max="24"
-            value={sharedInputs.age}
-            onChange={handleAgeChange}
-            className="age-slider"
-            aria-describedby={`${type}-age-hint`}
-          />
-          <span className="input-hint" id={`${type}-age-hint`}>0-24 months</span>
-        </div>
-
-        <div className="form-group">
-          <label>
-            Gender
-            <span className="tooltip" aria-label="Boys and girls have different growth patterns according to WHO standards.">ⓘ</span>
-          </label>
-          <div className="unit-toggle" role="radiogroup" aria-label="Select baby's gender">
-            <input
-              type="radio"
-              id={`${type}-gender-girl`}
-              name={`${type}-gender`}
-              value="girl"
-              checked={sharedInputs.gender === 'girl'}
-              onChange={handleGenderChange}
+    <Box component="form" onSubmit={(e) => e.preventDefault()}>
+      <Grid container spacing={3}>
+        {/* Age Slider */}
+        <Grid item xs={12} md={4}>
+          <Box>
+            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              Age: {sharedInputs.age} months
+              <Tooltip title="Slide to select your baby's age from 0 to 24 months.">
+                <InfoIcon fontSize="small" color="action" />
+              </Tooltip>
+            </Typography>
+            <Slider
+              value={sharedInputs.age}
+              onChange={handleAgeChange}
+              min={0}
+              max={24}
+              marks
+              valueLabelDisplay="auto"
+              color="primary"
             />
-            <label htmlFor={`${type}-gender-girl`} className="toggle-label">Girl</label>
-            <input
-              type="radio"
-              id={`${type}-gender-boy`}
-              name={`${type}-gender`}
-              value="boy"
-              checked={sharedInputs.gender === 'boy'}
-              onChange={handleGenderChange}
-            />
-            <label htmlFor={`${type}-gender-boy`} className="toggle-label">Boy</label>
-          </div>
-        </div>
+            <Typography variant="caption" color="text.secondary">
+              0-24 months
+            </Typography>
+          </Box>
+        </Grid>
 
-        <div className="form-group">
-          <label htmlFor={`${type}-percentile`}>
-            Percentile: <span id={`${type}-percentile-display`}>{sharedInputs.percentile}</span>th
-            <span className="tooltip" aria-label="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">ⓘ</span>
-          </label>
-          <input
-            type="range"
-            id={`${type}-percentile`}
-            name="percentile"
-            min="1"
-            max="99"
-            value={sharedInputs.percentile}
-            onChange={handlePercentileChange}
-            className="percentile-slider"
-            aria-describedby={`${type}-percentile-hint`}
-          />
-          <div className="slider-labels">
-            <span>1st</span>
-            <span>25th</span>
-            <span>50th</span>
-            <span>75th</span>
-            <span>99th</span>
-          </div>
-          <div className="preset-buttons">
-            <button type="button" className="preset-btn" onClick={() => handlePresetClick(25)}>25th</button>
-            <button type="button" className="preset-btn" onClick={() => handlePresetClick(50)}>50th</button>
-            <button type="button" className="preset-btn" onClick={() => handlePresetClick(75)}>75th</button>
-          </div>
-        </div>
-      </div>
-    </form>
+        {/* Gender Toggle */}
+        <Grid item xs={12} md={4}>
+          <Box>
+            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              Gender
+              <Tooltip title="Boys and girls have different growth patterns according to WHO standards.">
+                <InfoIcon fontSize="small" color="action" />
+              </Tooltip>
+            </Typography>
+            <ToggleButtonGroup
+              value={sharedInputs.gender}
+              exclusive
+              onChange={handleGenderChange}
+              fullWidth
+              size="small"
+              color="primary"
+            >
+              <ToggleButton value="girl">Girl</ToggleButton>
+              <ToggleButton value="boy">Boy</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        </Grid>
+
+        {/* Percentile Slider */}
+        <Grid item xs={12} md={4}>
+          <Box>
+            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              Percentile: {sharedInputs.percentile}th
+              <Tooltip title="50th percentile = average. Higher numbers = larger baby. Lower numbers = smaller baby. All percentiles are healthy!">
+                <InfoIcon fontSize="small" color="action" />
+              </Tooltip>
+            </Typography>
+            <Slider
+              value={sharedInputs.percentile}
+              onChange={handlePercentileChange}
+              min={1}
+              max={99}
+              valueLabelDisplay="auto"
+              color="primary"
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography variant="caption" color="text.secondary">1st</Typography>
+              <Typography variant="caption" color="text.secondary">25th</Typography>
+              <Typography variant="caption" color="text.secondary">50th</Typography>
+              <Typography variant="caption" color="text.secondary">75th</Typography>
+              <Typography variant="caption" color="text.secondary">99th</Typography>
+            </Box>
+            <ButtonGroup size="small" fullWidth variant="outlined">
+              <Button onClick={() => handlePresetClick(25)}>25th</Button>
+              <Button onClick={() => handlePresetClick(50)}>50th</Button>
+              <Button onClick={() => handlePresetClick(75)}>75th</Button>
+            </ButtonGroup>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

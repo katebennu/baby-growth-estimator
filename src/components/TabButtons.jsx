@@ -1,3 +1,7 @@
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Box from '@mui/material/Box'
+
 function TabButtons({ activeTab, onTabChange }) {
   const tabs = [
     { id: 'weight', label: 'Weight' },
@@ -5,18 +9,24 @@ function TabButtons({ activeTab, onTabChange }) {
     { id: 'head', label: 'Head Circumference' }
   ]
 
+  const handleChange = (event, newValue) => {
+    onTabChange(newValue)
+  }
+
   return (
-    <div className="tabs">
-      {tabs.map(tab => (
-        <button
-          key={tab.id}
-          className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-          onClick={() => onTabChange(tab.id)}
-        >
-          {tab.label}
-        </button>
-      ))}
-    </div>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+      <Tabs
+        value={activeTab}
+        onChange={handleChange}
+        variant="fullWidth"
+        textColor="primary"
+        indicatorColor="primary"
+      >
+        {tabs.map(tab => (
+          <Tab key={tab.id} value={tab.id} label={tab.label} />
+        ))}
+      </Tabs>
+    </Box>
   )
 }
 
