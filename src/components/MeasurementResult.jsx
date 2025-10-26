@@ -122,9 +122,9 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
               <Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>
                 {formatWeight(weightLbs, 'lbs')}
               </Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>
-              {measurement} kg
-            </Typography>
+              <Typography variant="body1" sx={{ mt: 1 }}>
+                {measurement} kg
+              </Typography>
             </Box>
           </Box>
         )
@@ -299,6 +299,10 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
       {/* Measurement Display */}
       {renderMeasurementDisplay()}
 
+      <Typography variant="body1" gutterBottom sx={{ textAlign: 'center' }}>
+        A {age}-month-old {genderText} at the {percentileDesc}
+      </Typography>
+
       {/* Chart */}
       <Paper variant="outlined" sx={{ p: 2, my: 3 }}>
         <canvas ref={chartRef}></canvas>
@@ -312,10 +316,6 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
 
       {/* Information Section */}
       <Box sx={{ mt: 3 }}>
-        <Typography variant="body1" gutterBottom>
-          A {age}-month-old {genderText} at the {percentileDesc}
-        </Typography>
-
         {/* Planning Tips */}
         {contexts.length > 0 && (
           <Paper variant="outlined" sx={{ p: 2, mt: 2, bgcolor: 'grey.50' }}>

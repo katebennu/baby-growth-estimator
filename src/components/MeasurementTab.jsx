@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Alert from '@mui/material/Alert'
 import MeasurementForm from './MeasurementForm'
@@ -15,7 +15,7 @@ function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
     head: 'Head Circumference'
   }
 
-  const handleSubmit = (measurement) => {
+  const handleSubmit = useCallback((measurement) => {
     setError(null)
     setResult({
       measurement,
@@ -23,12 +23,12 @@ function MeasurementTab({ type, active, sharedInputs, onInputChange }) {
       gender: sharedInputs.gender,
       percentile: sharedInputs.percentile
     })
-  }
+  }, [sharedInputs.age, sharedInputs.gender, sharedInputs.percentile])
 
-  const handleError = (errorMessage) => {
+  const handleError = useCallback((errorMessage) => {
     setResult(null)
     setError(errorMessage)
-  }
+  }, [])
 
   if (!active) return null
 
