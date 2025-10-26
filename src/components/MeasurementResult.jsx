@@ -119,13 +119,13 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
               display: 'inline-block',
               minWidth: 200
             }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+              <Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>
                 {formatWeight(weightLbs, 'lbs')}
               </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+            <Typography variant="body1" sx={{ mt: 1 }}>
               {measurement} kg
             </Typography>
+            </Box>
           </Box>
         )
       }

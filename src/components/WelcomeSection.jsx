@@ -5,14 +5,13 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Alert from '@mui/material/Alert'
+import StrollerIcon from '@mui/icons-material/Stroller'
 
 function WelcomeSection() {
   return (
     <Box sx={{ mb: 4 }}>
-      <Alert severity="info" sx={{ mb: 2 }}>
-        Use WHO growth standards to estimate your baby's future measurements and plan ahead for important purchases.
-        Whether you're shopping for clothes, choosing a stroller, or planning for a car seat upgrade, knowing your baby's
-        expected size helps you make informed decisions.
+      <Alert severity="info" sx={{ mb: 2 }} icon={<StrollerIcon />}>
+        Use WHO growth standards to estimate your baby's future measurements, whether you're shopping for clothes, choosing a stroller, or planning for a car seat upgrade.
       </Alert>
 
       <Accordion>
