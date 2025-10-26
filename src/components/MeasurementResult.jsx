@@ -97,14 +97,14 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
         metricUnit: 'cm',
         imperialUnit: 'inches',
         convertToImperial: cmToInches,
-        formatImperial: (val) => formatLength(val, 'inches'),
+        formatImperial: () => formatLength(measurement, 'inches'),
         formatMetric: (val) => `${val} cm`
       },
       head: {
         metricUnit: 'cm',
         imperialUnit: 'inches',
         convertToImperial: cmToInches,
-        formatImperial: (val) => formatHeadCircumference(val, 'inches'),
+        formatImperial: () => formatHeadCircumference(measurement, 'inches'),
         formatMetric: (val) => `${val} cm`
       }
     }

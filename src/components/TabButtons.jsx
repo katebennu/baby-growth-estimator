@@ -6,7 +6,7 @@ function TabButtons({ activeTab, onTabChange }) {
   const tabs = [
     { id: 'weight', label: 'Weight' },
     { id: 'length', label: 'Length' },
-    { id: 'head', label: 'Head Circumference' }
+    { id: 'head', label: 'Head' }
   ]
 
   const handleChange = (event, newValue) => {
