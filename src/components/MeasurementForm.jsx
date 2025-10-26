@@ -26,8 +26,12 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
     onInputChange({ ...sharedInputs, percentile: newValue })
   }
 
-  const handlePresetClick = (percentile) => {
+  const handlePercentilePresetClick = (percentile) => {
     onInputChange({ ...sharedInputs, percentile })
+  }
+
+  const handleAgePresetClick = (age) => {
+    onInputChange({ ...sharedInputs, age })
   }
 
   // Auto-calculate when inputs change
@@ -35,7 +39,7 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
     const { age, gender, percentile } = sharedInputs
 
     // Validate inputs
-    if (!age || age < 0 || age > 24) return
+    if (age === null || age === undefined || age < 0 || age > 24) return
     if (!gender) return
     if (!percentile || percentile < 1 || percentile > 99) return
 
@@ -50,32 +54,8 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
   return (
     <Box component="form" onSubmit={(e) => e.preventDefault()}>
       <Grid container spacing={3}>
-        {/* Age Slider */}
-        <Grid item xs={12} md={4}>
-          <Box>
-            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              Age: {sharedInputs.age} months
-              <Tooltip title="Slide to select your baby's age from 0 to 24 months.">
-                <InfoIcon fontSize="small" color="action" />
-              </Tooltip>
-            </Typography>
-            <Slider
-              value={sharedInputs.age}
-              onChange={handleAgeChange}
-              min={0}
-              max={24}
-              marks
-              valueLabelDisplay="auto"
-              color="primary"
-            />
-            <Typography variant="caption" color="text.secondary">
-              0-24 months
-            </Typography>
-          </Box>
-        </Grid>
-
         {/* Gender Toggle */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box>
             <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
               Gender
@@ -97,8 +77,42 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
           </Box>
         </Grid>
 
+        {/* Age Slider */}
+        <Grid item xs={12} md={9}>
+          <Box>
+            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              Age: {sharedInputs.age} months
+              <Tooltip title="Slide to select your baby's age from 0 to 24 months.">
+                <InfoIcon fontSize="small" color="action" />
+              </Tooltip>
+            </Typography>
+            <Slider
+              value={sharedInputs.age}
+              onChange={handleAgeChange}
+              min={0}
+              max={24}
+              valueLabelDisplay="auto"
+              color="primary"
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              {/* clickable age labels */}
+              {[0, 6, 12, 18, 24].map((age) => (
+                <Typography
+                  key={age}
+                  variant="caption"
+                  color="text.secondary"
+                  onClick={() => handleAgePresetClick(age)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {age}m
+                </Typography>
+              ))}
+            </Box>
+          </Box>
+        </Grid>
+
         {/* Percentile Slider */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12}>
           <Box>
             <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 0.5 }}>
               Percentile: {sharedInputs.percentile}th
@@ -115,17 +129,19 @@ function MeasurementForm({ type, label, sharedInputs, onInputChange, onSubmit, o
               color="primary"
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="caption" color="text.secondary">1st</Typography>
-              <Typography variant="caption" color="text.secondary">25th</Typography>
-              <Typography variant="caption" color="text.secondary">50th</Typography>
-              <Typography variant="caption" color="text.secondary">75th</Typography>
-              <Typography variant="caption" color="text.secondary">99th</Typography>
+              {/* clickable percentile labels */}
+              {[1, 25, 50, 75, 99].map((pct) => (
+                <Typography
+                  key={pct}
+                  variant="caption"
+                  color="text.secondary"
+                  onClick={() => handlePercentilePresetClick(pct)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {pct}th
+                </Typography>
+              ))}
             </Box>
-            <ButtonGroup size="small" fullWidth variant="outlined">
-              <Button onClick={() => handlePresetClick(25)}>25th</Button>
-              <Button onClick={() => handlePresetClick(50)}>50th</Button>
-              <Button onClick={() => handlePresetClick(75)}>75th</Button>
-            </ButtonGroup>
           </Box>
         </Grid>
       </Grid>

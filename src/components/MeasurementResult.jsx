@@ -84,138 +84,82 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
   }
 
   const renderMeasurementDisplay = () => {
-    if (type === 'weight') {
-      const weightLbs = kgToLbs(measurement)
-
-      if (selectedUnit === 'kg') {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
-                {measurement}
-                <Typography component="span" variant="h5" sx={{ ml: 1 }}>kg</Typography>
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {formatWeight(weightLbs, 'lbs')}
-            </Typography>
-          </Box>
-        )
-      } else {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>
-                {formatWeight(weightLbs, 'lbs')}
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                {measurement} kg
-              </Typography>
-            </Box>
-          </Box>
-        )
-      }
-    } else if (type === 'length') {
-      if (selectedUnit === 'cm') {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
-                {measurement}
-                <Typography component="span" variant="h5" sx={{ ml: 1 }}>cm</Typography>
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {formatLength(measurement, 'inches')}
-            </Typography>
-          </Box>
-        )
-      } else {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
-                {formatLength(measurement, 'inches')}
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {measurement} cm
-            </Typography>
-          </Box>
-        )
-      }
-    } else if (type === 'head') {
-      if (selectedUnit === 'cm') {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
-                {measurement}
-                <Typography component="span" variant="h5" sx={{ ml: 1 }}>cm</Typography>
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {formatHeadCircumference(measurement, 'inches')}
-            </Typography>
-          </Box>
-        )
-      } else {
-        return (
-          <Box sx={{ textAlign: 'center', my: 3 }}>
-            <Box sx={{
-              bgcolor: 'primary.main',
-              color: 'white',
-              p: 3,
-              borderRadius: 2,
-              display: 'inline-block',
-              minWidth: 200
-            }}>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
-                {formatHeadCircumference(measurement, 'inches')}
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              {measurement} cm
-            </Typography>
-          </Box>
-        )
+    // Configuration for each measurement type
+    const config = {
+      weight: {
+        metricUnit: 'kg',
+        imperialUnit: 'lbs',
+        convertToImperial: kgToLbs,
+        formatImperial: (val) => formatWeight(val, 'lbs'),
+        formatMetric: (val) => `${val} kg`
+      },
+      length: {
+        metricUnit: 'cm',
+        imperialUnit: 'inches',
+        convertToImperial: cmToInches,
+        formatImperial: (val) => formatLength(val, 'inches'),
+        formatMetric: (val) => `${val} cm`
+      },
+      head: {
+        metricUnit: 'cm',
+        imperialUnit: 'inches',
+        convertToImperial: cmToInches,
+        formatImperial: (val) => formatHeadCircumference(val, 'inches'),
+        formatMetric: (val) => `${val} cm`
       }
     }
+
+    const typeConfig = config[type]
+    const convertedValue = typeConfig.convertToImperial(measurement)
+    const isMetricSelected = selectedUnit === typeConfig.metricUnit
+
+    // For metric display: show metric in primary box with unit, imperial below
+    // For imperial display: show imperial formatted in primary box, metric below
+    let primaryDisplay, secondaryDisplay
+
+    if (isMetricSelected) {
+      primaryDisplay = (
+        <Typography variant="h3" component="div" sx={{ fontWeight: 700 }}>
+          {measurement}
+          <Typography component="span" variant="h5" sx={{ ml: 1 }}>
+            {typeConfig.metricUnit}
+          </Typography>
+        </Typography>
+      )
+      secondaryDisplay = typeConfig.formatImperial(convertedValue)
+    } else {
+      primaryDisplay = (
+        <>
+          <Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>
+            {typeConfig.formatImperial(convertedValue)}
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            {typeConfig.formatMetric(measurement)}
+          </Typography>
+        </>
+      )
+      secondaryDisplay = null
+    }
+
+    return (
+      <Box sx={{ textAlign: 'center', my: 3 }}>
+        <Box sx={{
+          bgcolor: 'primary.main',
+          color: 'white',
+          p: isMetricSelected ? 3 : 1,
+          borderRadius: 2,
+          display: 'inline-block',
+          minWidth: 200
+        }}>
+          {primaryDisplay}
+        </Box>
+        {secondaryDisplay && (
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+            {secondaryDisplay}
+          </Typography>
+        )}
+      </Box>
+    )
   }
 
   const renderAgeComparison = () => {
