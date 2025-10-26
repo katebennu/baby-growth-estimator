@@ -249,7 +249,9 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
 
       {/* Chart */}
       <Paper variant="outlined" sx={{ p: 2, my: 3 }}>
-        <canvas ref={chartRef}></canvas>
+        <Box sx={{ minHeight: { xs: 300, sm: 400 } }}>
+          <canvas ref={chartRef}></canvas>
+        </Box>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1, textAlign: 'center' }}>
           Data source:{' '}
           <Link href="https://www.cdc.gov/growthcharts/who-data-files.htm" target="_blank" rel="noopener noreferrer">

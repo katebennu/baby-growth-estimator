@@ -175,8 +175,7 @@ export function createGrowthChart(canvasOrId, measurementType, gender, selectedA
         data: { datasets },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 1.5,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,

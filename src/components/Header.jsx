@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 function Header() {
   return (
     <Box sx={{ textAlign: 'center', mb: 3 }}>
-      <Typography variant="h4" component="h1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+      <Typography variant="h5" component="h1" sx={{ fontWeight: 700, color: 'primary.main' }}>
         Baby Growth Estimator
       </Typography>
     </Box>

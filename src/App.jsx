@@ -84,7 +84,7 @@ function App() {
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 3 }}>
         <Container maxWidth="md">
           <Header />
-          <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, p: 4, mt: 3, boxShadow: 3 }}>
+          <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, p: 2, mt: 3, boxShadow: 3 }}>
             <WelcomeSection />
 
             <TabButtons
