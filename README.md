@@ -9,11 +9,13 @@ A web application that estimates baby growth measurements (weight, length, and h
 - **Modern React UI**: Built with React 18 for fast, interactive experience
 - **Tabbed Interface**: Separate tabs for weight, length, and head circumference measurements
 - **Interactive Growth Charts**: Visual percentile curves (5th, 25th, 50th, 75th, 95th) with your baby's position highlighted
+- **Dynamic Percentile Highlighting**: Selected percentile curve is highlighted in real-time as you adjust the slider
+- **Custom Percentile Curves**: Automatically generates curves for non-standard percentiles (1st-99th)
+- **Imperial Unit Charts**: All charts display in imperial units (lbs, inches) for easy reading
 - **Default Charts**: View WHO growth curves immediately on page load
 - **Age Slider**: Interactive slider for ages 0-24 months with real-time display
 - **Percentile Slider**: Visual percentile selection with quick preset buttons (25th, 50th, 75th)
 - **Future Growth Estimates**: Age comparison table showing projected measurements at 3-month intervals
-- **Practical Planning Tips**: Car seat, stroller, and crib recommendations based on measurements
 - **Gender Support**: Boys and Girls with different growth patterns
 - **Comprehensive Measurements**: Weight, length, and head circumference estimates
 - **Unit Display**: Shows both imperial (lbs/oz, feet/inches) and metric (kg, cm) simultaneously
