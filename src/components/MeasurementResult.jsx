@@ -16,26 +16,33 @@ import ListItemText from '@mui/material/ListItemText'
 import PrintIcon from '@mui/icons-material/Print'
 import { kgToLbs, cmToInches, formatWeight, formatLength, formatHeadCircumference, getSelectedUnit } from '../conversions'
 import { getPercentileDescription, generateAgeComparison } from '../calculations'
-import { createGrowthChart, updateChartPoint } from '../charts'
+import { createGrowthChart, updateChartPoint, updatePercentileHighlight } from '../charts'
 
 function MeasurementResult({ type, measurement, age, gender, percentile }) {
   const chartRef = useRef(null)
   const selectedUnit = getSelectedUnit(type)
   const [chartInitialized, setChartInitialized] = useState(false)
   const prevGenderRef = useRef(gender)
+  const prevPercentileRef = useRef(percentile)
 
   useEffect(() => {
     if (!chartRef.current) return
 
     const genderChanged = prevGenderRef.current !== gender
+    const percentileChanged = prevPercentileRef.current !== percentile
 
     // If gender changed or chart not initialized, recreate the entire chart
     if (!chartInitialized || genderChanged) {
       createGrowthChart(chartRef.current, type, gender, age, percentile, measurement)
       setChartInitialized(true)
       prevGenderRef.current = gender
+      prevPercentileRef.current = percentile
+    } else if (percentileChanged) {
+      // If only percentile changed, update highlighting without recreating chart
+      updatePercentileHighlight(chartRef.current, type, gender, age, percentile, measurement)
+      prevPercentileRef.current = percentile
     } else {
-      // Otherwise, just update the point
+      // Otherwise, just update the point (only age changed)
       updateChartPoint(chartRef.current, type, gender, age, percentile, measurement)
     }
   }, [type, gender, age, percentile, measurement, chartInitialized])
