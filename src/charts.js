@@ -17,6 +17,7 @@ import {
     boysHeadData, girlsHeadData
 } from './data.js';
 import { getPercentileDescription } from './calculations.js';
+import { kgToLbs, cmToInches } from './conversions.js';
 
 // Register Chart.js components
 Chart.register(
@@ -61,12 +62,22 @@ export function updateChartPoint(canvasOrId, measurementType, gender, selectedAg
     if (yourBabyDatasetIndex !== -1) {
         // Update existing dataset
         chart.data.datasets[yourBabyDatasetIndex].label = `Your baby (${getPercentileDescription(selectedPercentile)})`;
-        chart.data.datasets[yourBabyDatasetIndex].data = [{ x: selectedAge, y: selectedValue }];
+        chart.data.datasets[yourBabyDatasetIndex].data = [{
+            x: selectedAge,
+            y: measurementType === 'weight' ? kgToLbs(selectedValue) :
+               measurementType === 'length' ? cmToInches(selectedValue) :
+               cmToInches(selectedValue) // head circumference
+        }];
     } else {
         // Add new dataset for selected point
         chart.data.datasets.push({
             label: `Your baby (${getPercentileDescription(selectedPercentile)})`,
-            data: [{ x: selectedAge, y: selectedValue }],
+            data: [{
+                x: selectedAge,
+                y: measurementType === 'weight' ? kgToLbs(selectedValue) :
+                   measurementType === 'length' ? cmToInches(selectedValue) :
+                   cmToInches(selectedValue) // head circumference
+            }],
             borderColor: 'rgba(255, 0, 0, 1)',
             backgroundColor: 'rgba(255, 0, 0, 1)',
             pointRadius: 5,
@@ -139,7 +150,12 @@ export function createGrowthChart(canvasOrId, measurementType, gender, selectedA
 
         return {
             label: `${p.label} percentile`,
-            data: data.map(row => ({ x: row[0], y: row[p.index] })),
+            data: data.map(row => ({
+                x: row[0],
+                y: measurementType === 'weight' ? kgToLbs(row[p.index]) :
+                   measurementType === 'length' ? cmToInches(row[p.index]) :
+                   cmToInches(row[p.index]) // head circumference
+            })),
             borderColor: isSelectedPercentile ? p.color : p.color.replace('0.8)', '0.3)'),
             backgroundColor: 'transparent',
             borderWidth: isSelectedPercentile ? 3 : 2,
@@ -179,7 +195,12 @@ export function createGrowthChart(canvasOrId, measurementType, gender, selectedA
                     value = M * Math.pow(1 + L * S * z, 1 / L);
                 }
 
-                return { x: age, y: value };
+                return {
+                    x: age,
+                    y: measurementType === 'weight' ? kgToLbs(value) :
+                       measurementType === 'length' ? cmToInches(value) :
+                       cmToInches(value) // head circumference
+                };
             });
 
             datasets.push({
@@ -198,7 +219,12 @@ export function createGrowthChart(canvasOrId, measurementType, gender, selectedA
     if (selectedAge !== null && selectedPercentile !== null && selectedValue !== null) {
         datasets.push({
             label: `Your baby (${getPercentileDescription(selectedPercentile)})`,
-            data: [{ x: selectedAge, y: selectedValue }],
+            data: [{
+                x: selectedAge,
+                y: measurementType === 'weight' ? kgToLbs(selectedValue) :
+                   measurementType === 'length' ? cmToInches(selectedValue) :
+                   cmToInches(selectedValue) // head circumference
+            }],
             borderColor: 'rgba(255, 0, 0, 1)',
             backgroundColor: 'rgba(255, 0, 0, 1)',
             pointRadius: 5,
@@ -210,11 +236,11 @@ export function createGrowthChart(canvasOrId, measurementType, gender, selectedA
     // Determine axis labels
     let yAxisLabel;
     if (measurementType === 'weight') {
-        yAxisLabel = 'Weight (kg)';
+        yAxisLabel = 'Weight (lbs)';
     } else if (measurementType === 'length') {
-        yAxisLabel = 'Length (cm)';
+        yAxisLabel = 'Length (inches)';
     } else {
-        yAxisLabel = 'Head Circumference (cm)';
+        yAxisLabel = 'Head Circumference (inches)';
     }
 
     // Create chart
@@ -400,7 +426,12 @@ export function updatePercentileHighlight(canvasOrId, measurementType, gender, s
                 value = M * Math.pow(1 + L * S * z, 1 / L);
             }
 
-            return { x: age, y: value };
+            return {
+                x: age,
+                y: measurementType === 'weight' ? kgToLbs(value) :
+                   measurementType === 'length' ? cmToInches(value) :
+                   cmToInches(value) // head circumference
+            };
         });
 
         // Add new custom curve (insert before the red dot)
@@ -422,7 +453,11 @@ export function updatePercentileHighlight(canvasOrId, measurementType, gender, s
     const yourBabyDatasetIndex = chart.data.datasets.findIndex(ds => ds.label && ds.label.includes('Your baby'));
     if (yourBabyDatasetIndex !== -1) {
         chart.data.datasets[yourBabyDatasetIndex].label = `Your baby (${getPercentileDescription(selectedPercentile)})`;
-        chart.data.datasets[yourBabyDatasetIndex].data = [{ x: selectedAge, y: selectedValue }];
+        chart.data.datasets[yourBabyDatasetIndex].data = [{
+            x: selectedAge,
+            y: measurementType === 'weight' ? kgToLbs(selectedValue) :
+               measurementType === 'length' ? cmToInches(selectedValue) : selectedValue
+        }];
     }
 
     chart.update('none'); // 'none' mode = no animation for instant update

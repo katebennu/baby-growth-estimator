@@ -57,36 +57,7 @@ function MeasurementResult({ type, measurement, age, gender, percentile }) {
   }, [])
 
   const getContext = () => {
-    if (type === 'weight') {
-      const weightLbs = kgToLbs(measurement)
-      const contexts = []
-
-      if (weightLbs < 22) {
-        contexts.push("Most infant car seats support up to 22-35 lbs")
-      } else if (weightLbs < 40) {
-        contexts.push("Convertible car seat recommended (up to 40-65 lbs)")
-      }
-
-      if (weightLbs < 35) {
-        contexts.push("Standard strollers support 35-50 lbs")
-      }
-
-      return contexts
-    } else if (type === 'length') {
-      const lengthInches = cmToInches(measurement)
-      const contexts = []
-
-      if (lengthInches < 25) {
-        contexts.push("Bassinet or cradle suitable (typically up to 25\")")
-      } else if (lengthInches < 35) {
-        contexts.push("Transition to crib recommended (fits up to ~35\")")
-      } else {
-        contexts.push("Standard crib appropriate (up to ~52\")")
-      }
-
-      return contexts
-    }
-
+    // Planning tips removed pending source verification
     return []
   }
 
