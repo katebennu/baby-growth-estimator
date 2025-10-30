@@ -56,12 +56,12 @@ async function loadCSV(filename) {
 export async function loadAllData() {
     try {
         const results = await Promise.all([
-            loadCSV('WHO-Boys-Weight-for-age-Percentiles.csv'),
-            loadCSV('WHO-Girls-Weight-for-age Percentiles.csv'),
-            loadCSV('WHO-Boys-Length-for-age-Percentiles.csv'),
-            loadCSV('WHO-Girls-Length-for-age-Percentiles.csv'),
-            loadCSV('WHO-Boys-Head-Circumference-for-age-Percentiles.csv'),
-            loadCSV('WHO-Girls-Head-Circumference-for-age-Percentiles.csv')
+            loadCSV('data/WHO-Boys-Weight-for-age-Percentiles.csv'),
+            loadCSV('data/WHO-Girls-Weight-for-age Percentiles.csv'),
+            loadCSV('data/WHO-Boys-Length-for-age-Percentiles.csv'),
+            loadCSV('data/WHO-Girls-Length-for-age-Percentiles.csv'),
+            loadCSV('data/WHO-Boys-Head-Circumference-for-age-Percentiles.csv'),
+            loadCSV('data/WHO-Girls-Head-Circumference-for-age-Percentiles.csv')
         ]);
 
         // Clear and populate the arrays

@@ -39,7 +39,7 @@ A web application that estimates baby growth measurements (weight, length, and h
 
 ## Data Source
 
-The application uses [WHO Child Growth Standards data from the CDC](https://www.cdc.gov/growthcharts/who-data-files.htm), loaded from CSV files:
+The application uses [WHO Child Growth Standards data from the CDC](https://www.cdc.gov/growthcharts/who-data-files.htm), loaded from CSV files in `public/data/`:
 - `WHO-Boys-Weight-for-age-Percentiles.csv`
 - `WHO-Girls-Weight-for-age Percentiles.csv`
 - `WHO-Boys-Length-for-age-Percentiles.csv`
@@ -145,11 +145,12 @@ Coverage excludes UI-related modules (forms.js, ui.js, charts.js, main.js) which
 ```
 baby-weight-predictor/
 ├── index.html          # Vite entry point
-├── styles.css          # CSS styling
 ├── vite.config.js      # Vite configuration
+├── cypress.config.js   # Cypress E2E test configuration
 ├── src/                # React application source
 │   ├── main.jsx        # React entry point
 │   ├── App.jsx         # Root component
+│   ├── theme.js        # Material-UI theme configuration
 │   ├── components/     # React components
 │   │   ├── Header.jsx
 │   │   ├── Footer.jsx
@@ -164,15 +165,28 @@ baby-weight-predictor/
 │   ├── conversions.js  # Unit conversion functions
 │   └── charts.js       # Chart.js integration
 ├── public/             # Static assets
-│   └── WHO-*.csv       # WHO growth data files
+│   ├── data/           # WHO growth data files
+│   │   ├── WHO-Boys-Weight-for-age-Percentiles.csv
+│   │   ├── WHO-Girls-Weight-for-age Percentiles.csv
+│   │   ├── WHO-Boys-Length-for-age-Percentiles.csv
+│   │   ├── WHO-Girls-Length-for-age-Percentiles.csv
+│   │   ├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
+│   │   └── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
+│   └── .nojekyll       # GitHub Pages configuration
 ├── tests/              # Test suite (Vitest)
 │   ├── calculations.test.js
 │   ├── conversions.test.js
 │   └── data.test.js
+├── cypress/            # E2E tests (Cypress)
+│   ├── e2e/
+│   │   └── app.cy.js   # Comprehensive E2E test suite
+│   ├── support/
+│   │   └── e2e.js      # Cypress support file
+│   └── fixtures/       # Test fixtures
 ├── package.json        # Dependencies and scripts
 ├── README.md           # This file
 ├── DEPLOYMENT.md       # Deployment instructions
-└── CLAUDE.md          # Developer documentation
+└── CLAUDE.md           # Developer documentation
 ```
 
 ### React Component Architecture

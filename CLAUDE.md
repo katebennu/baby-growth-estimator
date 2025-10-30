@@ -69,11 +69,12 @@ This is a React single-page application built with Vite.
 
 ### Data Layer
 - **WHO Growth Data**: Loaded from CSV files at runtime using the Fetch API, containing WHO LMS (Lambda-Mu-Sigma) method data
-  - Weight data: `boysWeightData`, `girlsWeightData` (loaded from WHO-*-Weight-for-age-Percentiles.csv)
-  - Length data: `boysLengthData`, `girlsLengthData` (loaded from WHO-*-Length-for-age-Percentiles.csv)
-  - Head circumference data: `boysHeadData`, `girlsHeadData` (loaded from WHO-*-Head-Circumference-for-age-Percentiles.csv)
+  - Weight data: `boysWeightData`, `girlsWeightData` (loaded from `public/data/WHO-*-Weight-for-age-Percentiles.csv`)
+  - Length data: `boysLengthData`, `girlsLengthData` (loaded from `public/data/WHO-*-Length-for-age-Percentiles.csv`)
+  - Head circumference data: `boysHeadData`, `girlsHeadData` (loaded from `public/data/WHO-*-Head-Circumference-for-age-Percentiles.csv`)
 - Each data array contains rows of [age, L, M, S, P2.3, P5, P10, P25, P50, P75, P90, P95, P97.7] values
 - CSV files are parsed into numeric arrays by `src/data.js` module
+- All WHO data is in metric units (kg for weight, cm for length/head)
 
 ### Calculation Engine
 - `calculateMeasurement(age, gender, percentile, measurementType)`: Core function that looks up the appropriate data array, finds the age row, and returns the percentile value
@@ -91,11 +92,12 @@ This is a React single-page application built with Vite.
 ```
 baby-weight-predictor/
 ├── index.html          # Vite entry point (mounts React app)
-├── styles.css          # All styling and responsive design
 ├── vite.config.js      # Vite configuration with React plugin and test settings
+├── cypress.config.js   # Cypress E2E test configuration
 ├── src/                # React application source
 │   ├── main.jsx        # React entry point (renders App)
 │   ├── App.jsx         # Root React component
+│   ├── theme.js        # Material-UI theme configuration
 │   ├── components/     # React components
 │   │   ├── Header.jsx
 │   │   ├── Footer.jsx
@@ -103,26 +105,36 @@ baby-weight-predictor/
 │   │   ├── TabButtons.jsx
 │   │   ├── MeasurementTab.jsx
 │   │   ├── MeasurementForm.jsx
-│   │   └── MeasurementResult.jsx
+│   │   ├── MeasurementResult.jsx
+│   │   └── DefaultChart.jsx
 │   ├── data.js         # CSV loading and parsing
 │   ├── calculations.js # WHO LMS formulas
 │   ├── conversions.js  # Unit conversion functions
-│   └── charts.js       # Chart.js functions
-├── tests/             # Test suite (Vitest)
+│   └── charts.js       # Chart.js integration (imperial units)
+├── public/             # Static assets
+│   ├── data/           # WHO growth data files
+│   │   ├── WHO-Boys-Weight-for-age-Percentiles.csv
+│   │   ├── WHO-Girls-Weight-for-age Percentiles.csv
+│   │   ├── WHO-Boys-Length-for-age-Percentiles.csv
+│   │   ├── WHO-Girls-Length-for-age-Percentiles.csv
+│   │   ├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
+│   │   └── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
+│   └── .nojekyll       # GitHub Pages configuration
+├── tests/              # Test suite (Vitest)
 │   ├── calculations.test.js
 │   ├── conversions.test.js
 │   └── data.test.js
-├── package.json       # Dependencies and scripts
-├── vitest.config.js   # Test configuration
-├── .gitignore        # Git ignore rules
-├── README.md         # User documentation
-├── CLAUDE.md         # Developer documentation
-├── WHO-Boys-Weight-for-age-Percentiles.csv
-├── WHO-Girls-Weight-for-age-Percentiles.csv
-├── WHO-Boys-Length-for-age-Percentiles.csv
-├── WHO-Girls-Length-for-age-Percentiles.csv
-├── WHO-Boys-Head-Circumference-for-age-Percentiles.csv
-└── WHO-Girls-Head-Circumference-for-age-Percentiles.csv
+├── cypress/            # E2E tests (Cypress)
+│   ├── e2e/
+│   │   └── app.cy.js   # Comprehensive E2E test suite
+│   ├── support/
+│   │   └── e2e.js      # Cypress support file
+│   └── fixtures/       # Test fixtures
+├── package.json        # Dependencies and scripts
+├── .gitignore          # Git ignore rules
+├── README.md           # User documentation
+├── DEPLOYMENT.md       # Deployment instructions
+└── CLAUDE.md           # Developer documentation (this file)
 ```
 
 ### Component Dependencies

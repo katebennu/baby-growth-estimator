@@ -3,5 +3,6 @@ coverage/
 dist/
 .DS_Store
 *.log
-index.html.backup
-js/
+.vite/
+cypress/downloads/
+cypress/screenshots/
