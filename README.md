@@ -15,6 +15,9 @@ Most growth calculators simply tell you what percentile your baby is in based on
 - **Precise Calculations**: Applies the WHO LMS statistical model to compute any
   percentile (1st-99th), not just pre-calculated values
 
+<img width="755" height="757" alt="Screenshot 2025-10-30 at 11 49 18 AM" src="https://github.com/user-attachments/assets/5554d696-aa1c-46c8-9f96-29be5f51c826" />
+
+
 ## Key Features
 
 ### Interactive Data Visualization
