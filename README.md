@@ -1,41 +1,66 @@
 # Baby Growth Estimator
 
-A web application that estimates baby growth measurements (weight, length, and head circumference) based on WHO (World Health Organization) growth standards using age, gender, and percentile data.
-
 **[View Live Application](https://katebennu.github.io/baby-growth-estimator/)**
 
-## Features
+An intuitive web application for estimating baby growth measurements based on WHO (World Health Organization) growth standards. Unlike typical percentile calculators that only show where your baby falls on a growth curve, this tool goes further by performing advanced calculations with WHO data to **predict future growth** and visualize growth trajectories across any percentile.
 
-- **Modern React UI**: Built with React 18 for fast, interactive experience
-- **Tabbed Interface**: Separate tabs for weight, length, and head circumference measurements
-- **Interactive Growth Charts**: Visual percentile curves (5th, 25th, 50th, 75th, 95th) with your baby's position highlighted
-- **Dynamic Percentile Highlighting**: Selected percentile curve is highlighted in real-time as you adjust the slider
-- **Custom Percentile Curves**: Automatically generates curves for non-standard percentiles (1st-99th)
-- **Imperial Unit Charts**: All charts display in imperial units (lbs, inches) for easy reading
-- **Default Charts**: View WHO growth curves immediately on page load
-- **Age Slider**: Interactive slider for ages 0-24 months with real-time display
-- **Percentile Slider**: Visual percentile selection with quick preset buttons (25th, 50th, 75th)
-- **Future Growth Estimates**: Age comparison table showing projected measurements at 3-month intervals
-- **Gender Support**: Boys and Girls with different growth patterns
-- **Comprehensive Measurements**: Weight, length, and head circumference estimates
-- **Unit Display**: Shows both imperial (lbs/oz, feet/inches) and metric (kg, cm) simultaneously
-- **Lbs/Oz Format**: Displays pounds and ounces instead of decimal pounds
-- **Synchronized Inputs**: Age, gender, and percentile sync across all tabs
-- **Print-Friendly**: Print button for saving or sharing results
+## Why This Tool is Different
+
+Most growth calculators simply tell you what percentile your baby is in based on their current measurements. This application takes a planning-focused approach:
+
+- **Forward-Looking**: Choose a target percentile (any value from 1st to 99th) and see estimated measurements for your baby's current and future ages
+- **Interactive Visualization**: Real-time charts with dynamic percentile highlighting let you instantly see growth trajectories as you adjust inputs
+- **Comprehensive Planning**: Generates growth projections at 3-month intervals to help with planning ahead
+- **Intuitive Design**: Material-UI interface with smooth sliders, synchronized tabs, and instant calculations - no page refreshes needed
+- **Mathematically Precise**: Uses WHO's LMS (Lambda-Mu-Sigma) method for accurate percentile calculations across all age ranges
+
+## Key Features
+
+### Interactive Data Visualization
+- **Real-Time Growth Charts**: Beautiful, responsive charts powered by Chart.js showing WHO percentile curves (5th, 25th, 50th, 75th, 95th)
+- **Dynamic Percentile Highlighting**: Watch the selected percentile curve highlight instantly as you move the slider - see exactly which growth path you're viewing
+- **Custom Percentile Curves**: Automatically generates precise curves for any percentile from 1st to 99th, not just the standard five
+- **Smart Chart Updates**: Optimized rendering that only updates what changed - no flickering or full redraws
+
+### Planning & Projections
+- **Future Growth Estimates**: Interactive table showing projected measurements at 3-month intervals
+- **Dual Unit Display**: All results show both imperial (lbs/oz, feet/inches) and metric (kg, cm) units simultaneously
+- **Print-Friendly**: One-click printing for sharing with caregivers or healthcare providers
+
+### Intuitive Interface
+- **Smooth Sliders**: Interactive age (0-24 months) and percentile (1st-99th) sliders with real-time visual feedback
+- **Quick Percentile Presets**: One-click buttons for common percentiles (25th, 50th, 75th)
+- **Tabbed Navigation**: Seamlessly switch between weight, length, and head circumference
+- **Synchronized Inputs**: Age, gender, and percentile settings stay consistent across all measurement tabs
+- **Instant Calculations**: No loading spinners or page refreshes - results appear immediately
+
+### Technical Excellence
+- **WHO LMS Method**: Uses the official Lambda-Mu-Sigma formula for mathematically precise calculations
+- **Modern React Stack**: Built with React 18, Material-UI, and Vite for a fast, polished experience
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Real-time Calculation**: Instant estimates based on WHO data
+- **Client-Side Processing**: All calculations happen in your browser for speed and privacy
 
 ## How to Use
 
-1. **Open the Application**: Visit the [live site](https://katebennu.github.io/baby-growth-estimator/) or open `index.html` in your web browser
-2. **View Growth Curves**: WHO percentile curves are displayed immediately on page load
-3. **Select a Tab**: Choose between Weight, Length, or Head Circumference
-4. **Enter Baby's Age**: Input the baby's age in months (0-24)
-5. **Select Gender**: Choose between Boy or Girl
-6. **Choose Percentile**: Select the desired percentile for the estimate
-7. **Select Unit**: Toggle between metric and imperial units for your preference
-8. **Calculate**: Click the calculate button to get the measurement
-9. **View Results**: See the estimate with both units displayed, plus your baby's position on the growth chart
+1. **Visit the [Live Application](https://katebennu.github.io/baby-growth-estimator/)** - Growth curves display immediately
+2. **Select your baby's gender** (Boy/Girl) and **age** (0-24 months) using the interactive sliders
+3. **Choose a percentile** (1st-99th) - use the slider or quick-select buttons
+4. **View instant results**:
+   - Current estimated measurement in both imperial and metric units
+   - Position on WHO growth curves with dynamic highlighting
+   - Future growth projections at 3-month intervals
+5. **Switch tabs** to see weight, length, or head circumference - your inputs stay synchronized
+6. **Print or share** results using the print button
+
+## Use Cases
+
+Perfect for parents, caregivers, and healthcare providers who want to:
+
+- **Plan ahead**: See projected weights and sizes for the next 6-12 months to prepare for gear purchases or developmental milestones
+- **Explore scenarios**: Adjust the percentile slider to visualize different growth trajectories and understand what's typical vs. exceptional
+- **Track trends**: Compare your baby's current measurements against projected growth paths
+- **Communicate with healthcare providers**: Print clear, visual summaries to discuss at pediatric appointments
+- **Educational purposes**: Understand how WHO growth standards work and how percentiles relate to actual measurements
 
 ## Data Source
 
