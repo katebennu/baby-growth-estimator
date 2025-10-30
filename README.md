@@ -12,7 +12,8 @@ Most growth calculators simply tell you what percentile your baby is in based on
 - **Interactive Visualization**: Real-time charts with dynamic percentile highlighting let you instantly see growth trajectories as you adjust inputs
 - **Comprehensive Planning**: Generates growth projections at 3-month intervals to help with planning ahead
 - **Intuitive Design**: Material-UI interface with smooth sliders, synchronized tabs, and instant calculations - no page refreshes needed
-- **Mathematically Precise**: Uses WHO's LMS (Lambda-Mu-Sigma) method for accurate percentile calculations across all age ranges
+- **Precise Calculations**: Applies the WHO LMS statistical model to compute any
+  percentile (1st-99th), not just pre-calculated values
 
 ## Key Features
 
